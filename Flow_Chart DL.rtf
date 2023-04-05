@@ -1,0 +1,54 @@
+{\rtf1\ansi\ansicpg1252\cocoartf2707
+\cocoatextscaling0\cocoaplatform0{\fonttbl\f0\fswiss\fcharset0 Helvetica-Bold;\f1\fswiss\fcharset0 Helvetica;}
+{\colortbl;\red255\green255\blue255;}
+{\*\expandedcolortbl;;}
+\paperw11900\paperh16840\margl1440\margr1440\vieww11520\viewh8400\viewkind0
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
+
+\f0\b\fs24 \cf0 ############ FLOW CHART ######### 
+\f1\b0 \
+\
+\
+library(grid)\
+library(Gmisc)\
+\
+dev.new()\
+\
+grid.newpage()\
+leftx <- .05\
+midx <- .5\
+rightx <- .95\
+width <- .4\
+gp <- gpar(fill = "lightgrey")\
+(total <- boxGrob(\'93Full ABCD cohort \\n N =  11244", \
+ x=midx, y=.9, box_gp = gp, width = width))\
+(basal_fMRI_cog <- boxGrob("Participants with basal rs-fMRI  and complete cognitive tests  \\n N = 8067 ", \
+ x=midx, y=.65, box_gp = gp, width = 0.95, height = 0.1))\
+# connect boxes like this\
+connectGrob(total, basal_fMRI_cog, "v")\
+\
+(inel <- boxGrob("non-inclusion criteria\\n N = 3177", \
+ x=.75, y=.78, box_gp = gp, width = .25, height = .06))\
+\
+connectGrob(total, inel, "-")\
+\
+(QC_fMRI <- boxGrob("SIMENS or GE manufacturer AND  (FD) < 0.2 \\n N = 3824", \
+ x=midx, y=.39, box_gp = gp, width = 0.95, height = 0.1))\
+# connect boxes like this\
+connectGrob(basal_fMRI_cog,QC_fMRI, "v")\
+\
+(inel2 <- boxGrob("no meet the QC criteria \\n N = 4243", \
+ x=.75, y=.52, box_gp = gp, width = .3, height = .07))\
+\
+connectGrob(basal_fMRI_cog, inel2, "-")\
+\
+demographic<- boxGrob("Participants with complete socio-economic information (Income) \\n N = 3167", \
+  x=midx, y=.10, box_gp = gp, width = .7, height = 0.07)\
+connectGrob(QC_fMRI,demographic , "v")\
+\
+demographic\
+\
+(inel3 <- boxGrob("No Income information N = 657", \
+ x=.75, y=.25, box_gp = gp, width = .4, height = .06))\
+\
+connectGrob(demographic,inel3, "-")}
