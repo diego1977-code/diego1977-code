@@ -1,0 +1,2227 @@
+{\rtf1\ansi\ansicpg1252\cocoartf2707
+\cocoatextscaling0\cocoaplatform0{\fonttbl\f0\fswiss\fcharset0 Helvetica;\f1\fswiss\fcharset0 Helvetica-Bold;}
+{\colortbl;\red255\green255\blue255;}
+{\*\expandedcolortbl;;}
+\paperw11900\paperh16840\margl1440\margr1440\vieww34900\viewh18300\viewkind0
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
+
+\f0\fs24 \cf0 \
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
+\cf0 set.seed(917);\
+\
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
+\cf0 half_size <- floor(0.67 * nrow(whole_final_cohort))\
+\
+random_sample <- sample(seq_len(nrow(whole_final_cohort)), size = half_size)\
+\
+train_data <- whole_final_cohort[random_sample, ]\
+\
+test_data <- whole_final_cohort[-random_sample, ]\
+\
+\
+control <- trainControl(method="repeatedcv", number=10, repeats=5)\
+\
+\
+\
+\
+\'91######## To get effect sizes or variablility explainde by ONLY the brain network predictor (ONLY ONE FACTOR)  ###### \
+\
+train_control<-trainControl(method="repeatedcv", number=10, repeats=5)\
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
+\cf0 \
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
+\cf0 observed_C=test_data[ ,c("composite_crystilized")]\
+\
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
+\cf0 mtry <- sqrt(ncol(train_data))\
+coco <- expand.grid(.mtyr=seq(0,0.1,by=0.01))\
+mdl_DMN_C = train(composite_crystilized ~  DMN,train_data,method="lm",\
+trControl=control, tunegrid=coco )\
+\
+p_DMN_C<-predict(mdl_DMN_C ,newdata=test_data)\
+r_DMN_C= cor.test (p_DMN_C,observed_C,method="spearman")\
+\
+summary(mdl_DMN_C)\
+r_DMN_C\
+\
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
+\cf0 \
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
+\cf0 mtry <- sqrt(ncol(train_data))\
+coco <- expand.grid(.mtyr=seq(0,0.1,by=0.01))\
+mdl_DMN_VAN_C = train(composite_crystilized ~  DMN_VAN,train_data,method="lm",\
+ trControl=control, tunegrid=coco )\
+\
+p_DMN_VAN_C<-predict(mdl_DMN_VAN_C,newdata=test_data)\
+r_DMN_VAN_C= cor.test (p_DMN_VAN_C,observed_C,method="spearman")\
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
+\cf0 \
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
+\cf0 summary(mdl_DMN_VAN_C)\
+r_DMN_VAN_C\
+\
+\
+mdl_DMN_DAN_C  = train(composite_crystilized ~  DMN_DAN,train_data,method="lm",\
+ trControl=control, tunegrid=coco )\
+\
+p_DMN_DAN_C<-predict(mdl_DMN_DAN_C ,newdata=test_data)\
+r_DMN_DAN_C= cor.test (p_DMN_DAN_C,observed_C,method="spearman")\
+\
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
+\cf0 \
+summary(mdl_DMN_DAN_C)\
+r_DMN_DAN_C\
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
+\cf0 \
+\
+mdl_DAN_C = train(composite_crystilized ~  DAN,train_data,method="lm",\
+ trControl=control, tunegrid=coco )\
+\
+p_DAN_C<-predict(mdl_DAN_C,newdata=test_data)\
+r_DAN_C= cor.test (p_DAN_C,observed_C,method="spearman")\
+\
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
+\cf0 \
+summary(mdl_DAN_C)\
+r_DAN_C\
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
+\cf0 \
+mdl_VAN_C = train(composite_crystilized ~  VAN,train_data,method="lm",\
+ trControl=control, tunegrid=coco )\
+\
+p_VAN_C<-predict(mdl_VAN_C,newdata=test_data)\
+r_VAN_C= cor.test (p_VAN_C,observed_C,method="spearman")\
+\
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
+\cf0 summary(mdl_VAN_C)\
+r_VAN_C\
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
+\cf0 \
+\
+\
+mdl_VAN_DAN_C = train(composite_crystilized ~  VAN_DAN,train_data,method="lm",\
+ trControl=control, tunegrid=coco )\
+\
+p_VAN_DAN_C<-predict(mdl_VAN_DAN_C ,newdata=test_data)\
+r_VAN_DAN_C= cor.test (p_VAN_DAN_C,observed_C,method="spearman")\
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
+\cf0 \
+\
+summary(mdl_VAN_DAN_C)\
+r_VAN_DAN_C\
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
+\cf0 \
+\
+####### #### ######\
+\
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
+\cf0 observed_F=test_data[ ,c("composite_fluid")]\
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
+\cf0 \
+mtry <- sqrt(ncol(train_data))\
+coco <- expand.grid(.mtyr=seq(0,0.1,by=0.01))\
+mdl_DMN_F = train(composite_fluid~  DMN,train_data,method="lm",\
+trControl=control, tunegrid=coco )\
+\
+p_DMN_F<-predict(mdl_DMN_F ,newdata=test_data)\
+r_DMN_F= cor.test (p_DMN_F, observed_F,method="spearman")\
+\
+summary(mdl_DMN_F)\
+r_DMN_F\
+\
+\
+mtry <- sqrt(ncol(train_data))\
+coco <- expand.grid(.mtyr=seq(0,0.1,by=0.01))\
+mdl_DMN_VAN_F = train(composite_fluid ~  DMN_VAN,train_data,method="lm",\
+ trControl=control, tunegrid=coco )\
+\
+p_DMN_VAN_F<-predict(mdl_DMN_VAN_F,newdata=test_data)\
+r_DMN_VAN_F= cor.test (p_DMN_VAN_F,observed_F,method="spearman")\
+\
+summary(mdl_DMN_VAN_F)\
+r_DMN_VAN_F\
+\
+\
+mdl_DMN_DAN_F  = train(composite_fluid ~  DMN_DAN,train_data,method="lm",\
+ trControl=control, tunegrid=coco )\
+\
+p_DMN_DAN_F<-predict(mdl_DMN_DAN_F ,newdata=test_data)\
+r_DMN_DAN_F= cor.test (p_DMN_DAN_F,observed_F,method="spearman")\
+\
+\
+summary(mdl_DMN_DAN_F)\
+r_DMN_DAN_F\
+\
+\
+mdl_DAN_F= train(composite_fluid ~  DAN,train_data,method="lm",\
+ trControl=control, tunegrid=coco )\
+\
+p_DAN_F<-predict(mdl_DAN_F,newdata=test_data)\
+r_DAN_F= cor.test (p_DAN_F,observed_C,method="spearman")\
+\
+\
+summary(mdl_DAN_F)\
+r_DAN_F\
+\
+mdl_VAN_F = train(composite_fluid ~  VAN,train_data,method="lm",\
+ trControl=control, tunegrid=coco )\
+\
+p_VAN_F<-predict(mdl_VAN_F,newdata=test_data)\
+r_VAN_F= cor.test (p_VAN_F,observed_C,method="spearman")\
+\
+summary(mdl_VAN_F)\
+r_VAN_F\
+\
+\
+\
+mdl_VAN_DAN_F = train(composite_fluid ~  VAN_DAN,train_data,method="lm",\
+ trControl=control, tunegrid=coco )\
+\
+p_VAN_DAN_F<-predict(mdl_VAN_DAN_F ,newdata=test_data)\
+r_VAN_DAN_F= cor.test (p_VAN_DAN_F,observed_F,method="spearman")\
+\
+\
+summary(mdl_VAN_DAN_F)\
+r_VAN_DAN_F\
+\
+\
+\
+\
+\
+\
+######## To get effect sizes or variablility explainde by combination predictos   ###### \
+\
+\
+ train_control<-trainControl(method="repeatedcv", number=10, repeats=5)\
+\
+observed_C=test_data[ ,c("composite_crystilized")]\
+\
+mtry <- sqrt(ncol(train_data))\
+coco <- expand.grid(.mtyr=seq(0,0.1,by=0.01))\
+mdl_DMN_CC = train(composite_crystilized ~ Age + Sex+ Income+MRI_manufacturer+ education+FD+ DMN,train_data,method="lm",\
+trControl=control, tunegrid=coco )\
+\
+p_DMN_CC<-predict(mdl_DMN_CC ,newdata=test_data)\
+r_DMN_CC= cor.test (p_DMN_CC,observed_C,method="spearman")\
+\
+summary(mdl_DMN_CC)\
+r_DMN_CC\
+mtry <- sqrt(ncol(train_data))\
+coco <- expand.grid(.mtyr=seq(0,0.1,by=0.01))\
+mdl_DMN_VAN_CC = train(composite_crystilized ~  Age + Sex+ Income+MRI_manufacturer+ education+FD+ DMN_VAN,train_data,method="lm",\
+ trControl=control, tunegrid=coco )\
+\
+p_DMN_VAN_CC<-predict(mdl_DMN_VAN_CC,newdata=test_data)\
+r_DMN_VAN_CC= cor.test (p_DMN_VAN_CC,observed_C,method="spearman")\
+\
+summary(mdl_DMN_VAN_CC)\
+r_DMN_VAN_CC\
+mdl_DMN_DAN_CC  = train(composite_crystilized ~Age + Sex+ Income+MRI_manufacturer+ education+FD+   DMN_DAN,train_data,method="lm",\
+ trControl=control, tunegrid=coco )\
+\
+p_DMN_DAN_CC<-predict(mdl_DMN_DAN_CC ,newdata=test_data)\
+r_DMN_DAN_CC= cor.test (p_DMN_DAN_CC,observed_C,method="spearman")\
+summary(mdl_DMN_DAN_CC)\
+r_DMN_DAN_CC\
+mdl_DAN_CC = train(composite_crystilized ~ Age + Sex+ Income+MRI_manufacturer+ education+FD+  DAN,train_data,method="lm",\
+ trControl=control, tunegrid=coco )\
+\
+p_DAN_CC<-predict(mdl_DAN_CC,newdata=test_data)\
+r_DAN_CC= cor.test (p_DAN_CC,observed_C,method="spearman")\
+summary(mdl_DAN_CC)\
+r_DAN_CC\
+\
+mdl_VAN_CC = train(composite_crystilized ~Age + Sex+ Income+MRI_manufacturer+ education+FD+   VAN,train_data,method="lm",\
+ trControl=control, tunegrid=coco )\
+\
+p_VAN_CC<-predict(mdl_VAN_C,newdata=test_data)\
+r_VAN_CC= cor.test (p_VAN_CC,observed_C,method="spearman")\
+\
+summary(mdl_VAN_CC)\
+r_VAN_CC\
+mdl_VAN_DAN_CC = train(composite_crystilized ~  Age + Sex+ Income+MRI_manufacturer+ education+FD+ VAN_DAN,train_data,method="lm",\
+ trControl=control, tunegrid=coco )\
+\
+p_VAN_DAN_CC<-predict(mdl_VAN_DAN_CC ,newdata=test_data)\
+r_VAN_DAN_CC= cor.test (p_VAN_DAN_CC,observed_C,method="spearman")\
+summary(mdl_VAN_DAN_CC)\
+r_VAN_DAN_CC\
+\
+\
+\
+\
+# ############# The complete models for fluid cognition #######################\
+\
+\
+observed_F=test_data[ ,c("composite_fluid")]\
+\
+mtry <- sqrt(ncol(train_data))\
+coco <- expand.grid(.mtyr=seq(0,0.1,by=0.01))\
+mdl_DMN_FC = train(composite_fluid~Age + Sex+ Income+MRI_manufacturer+ education+FD+  DMN,train_data,method="lm",\
+trControl=control, tunegrid=coco )\
+\
+p_DMN_FC<-predict(mdl_DMN_FC ,newdata=test_data)\
+r_DMN_FC= cor.test (p_DMN_FC, observed_F,method="spearman")\
+\
+summary(mdl_DMN_FC)\
+r_DMN_FC\
+\
+\
+mtry <- sqrt(ncol(train_data))\
+coco <- expand.grid(.mtyr=seq(0,0.1,by=0.01))\
+mdl_DMN_VAN_FC = train(composite_fluid ~Age + Sex+ Income+MRI_manufacturer+ education+FD+  DMN_VAN,train_data,method="lm",\
+ trControl=control, tunegrid=coco )\
+\
+p_DMN_VAN_FC<-predict(mdl_DMN_VAN_FC,newdata=test_data)\
+r_DMN_VAN_FC= cor.test (p_DMN_VAN_FC,observed_F,method="spearman")\
+\
+summary(mdl_DMN_VAN_FC)\
+r_DMN_VAN_FC\
+\
+\
+mdl_DMN_DAN_FC  = train(composite_fluid ~ Age + Sex+ Income+MRI_manufacturer+ education+FD+ DMN_DAN,train_data,method="lm",\
+ trControl=control, tunegrid=coco )\
+\
+p_DMN_DAN_FC<-predict(mdl_DMN_DAN_FC ,newdata=test_data)\
+r_DMN_DAN_FC= cor.test (p_DMN_DAN_FC,observed_F,method="spearman")\
+\
+\
+summary(mdl_DMN_DAN_FC)\
+r_DMN_DAN_FC\
+\
+\
+mdl_DAN_FC= train(composite_fluid ~Age + Sex+ Income+MRI_manufacturer+ education+FD+  DAN,train_data,method="lm",\
+ trControl=control, tunegrid=coco )\
+\
+p_DAN_FC<-predict(mdl_DAN_FC,newdata=test_data)\
+r_DAN_FC= cor.test (p_DAN_FC,observed_C,method="spearman")\
+\
+\
+summary(mdl_DAN_FC)\
+r_DAN_FC\
+\
+mdl_VAN_FC = train(composite_fluid ~ Age + Sex+ Income+MRI_manufacturer+ education+FD+ VAN,train_data,method="lm",\
+ trControl=control, tunegrid=coco )\
+\
+p_VAN_FC<-predict(mdl_VAN_FC,newdata=test_data)\
+r_VAN_FC= cor.test (p_VAN_FC,observed_C,method="spearman")\
+\
+summary(mdl_VAN_FC)\
+r_VAN_FC\
+\
+\
+\
+mdl_VAN_DAN_FC = train(composite_fluid ~  Age + Sex+ Income+MRI_manufacturer+ education+FD+VAN_DAN,train_data,method="lm",\
+ trControl=control, tunegrid=coco )\
+\
+p_VAN_DAN_FC<-predict(mdl_VAN_DAN_FC ,newdata=test_data)\
+r_VAN_DAN_FC= cor.test (p_VAN_DAN_FC,observed_F,method="spearman")\
+\
+\
+summary(mdl_VAN_DAN_FC)\
+r_VAN_DAN_FC\
+\
+\
+\
+\
+\
+\
+\
+####### #### ######\
+\
+observed_F=test_data[ ,c("composite_fluid")]\
+\
+mtry <- sqrt(ncol(train_data))\
+coco <- expand.grid(.mtyr=seq(0,0.1,by=0.01))\
+mdl_DMN_FC = train(composite_fluid~  DMN,train_data,method="lm",\
+trControl=control, tunegrid=coco )\
+\
+p_DMN_FC<-predict(mdl_DMN_FC ,newdata=test_data)\
+r_DMN_FC= cor.test (p_DMN_FC, observed_F,method="spearman")\
+\
+summary(mdl_DMN_F)\
+r_DMN_F\
+\
+\
+mtry <- sqrt(ncol(train_data))\
+coco <- expand.grid(.mtyr=seq(0,0.1,by=0.01))\
+mdl_DMN_VAN_F = train(composite_fluid ~  DMN_VAN,train_data,method="lm",\
+ trControl=control, tunegrid=coco )\
+\
+p_DMN_VAN_F<-predict(mdl_DMN_VAN_F,newdata=test_data)\
+r_DMN_VAN_F= cor.test (p_DMN_VAN_F,observed_F,method="spearman")\
+\
+summary(mdl_DMN_VAN_F)\
+r_DMN_VAN_F\
+\
+\
+mdl_DMN_DAN_F  = train(composite_fluid ~  DMN_DAN,train_data,method="lm",\
+ trControl=control, tunegrid=coco )\
+\
+p_DMN_DAN_F<-predict(mdl_DMN_DAN_F ,newdata=test_data)\
+r_DMN_DAN_F= cor.test (p_DMN_DAN_F,observed_F,method="spearman")\
+\
+\
+summary(mdl_DMN_DAN_F)\
+r_DMN_DAN_F\
+\
+\
+mdl_DAN_F= train(composite_fluid ~  DAN,train_data,method="lm",\
+ trControl=control, tunegrid=coco )\
+\
+p_DAN_F<-predict(mdl_DAN_F,newdata=test_data)\
+r_DAN_F= cor.test (p_DAN_F,observed_C,method="spearman")\
+\
+\
+summary(mdl_DAN_F)\
+r_DAN_F\
+\
+mdl_VAN_F = train(composite_fluid ~  VAN,train_data,method="lm",\
+ trControl=control, tunegrid=coco )\
+observed_F=test_data[ ,c("composite_crystilized")]\
+p_VAN_F<-predict(mdl_VAN_F,newdata=test_data)\
+r_VAN_F= cor.test (p_VAN_F,observed_C,method="spearman")\
+\
+summary(mdl_VAN_F)\
+r_VAN_F\
+\
+\
+\
+mdl_VAN_DAN_F = train(composite_fluid ~  VAN_DAN,train_data,method="lm",\
+ trControl=control, tunegrid=coco )\
+observed_F=test_data[ ,c("composite_crystilized")]\
+p_VAN_DAN_F<-predict(mdl_VAN_DAN_F ,newdata=test_data)\
+r_VAN_DAN_F= cor.test (p_VAN_DAN_F,observed_F,method="spearman")\
+\
+\
+summary(mdl_VAN_DAN_F)\
+r_VAN_DAN_F\
+\
+\
+\
+\
+\
+\
+\
+\
+\
+\
+\
+\
+\
+mdl = train(composite_crystilized ~ Age + Sex+ Income+MRI_manufacturer+ education+FD+ DMN_DAN,train_data,method="lm",\
+ trControl=control, tunegrid=coco )\
+ \
+observed_C=test_data[ ,c("composite_crystilized")]\
+\
+\
+p_DMN_DAN_C<-predict(mdl,newdata=test_data)\
+\
+\
+\
+##### Person r as a indicator of accuracy ####  \
+\
+r_DMN_DAN_C= cor (p_DMN_DAN_C,observed_C)\
+\
+\
+\
+mdl = train(composite_crystilized ~ Age + Sex+ Income+MRI_manufacturer+ education+FD+ VAN,train_data,method="lm",\
+ trControl=control, tunegrid=coco )\
+ \
+observed_C=test_data[ ,c("composite_crystilized")]\
+\
+\
+p_VAN_C<-predict(mdl,newdata=test_data)\
+\
+\
+\
+##### Person r as a indicator of accuracy ####  \
+\
+r_VAN_C= cor (p_VAN_C,observed_C)\
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
+
+\f1\b \cf0 \
+\
+\
+
+\f0\b0 \
+######### CONFIRMATION WITH LASSO ############\
+\
+\
+######## Hypermarameter tunning at alpha =1 for LASSO regularization goal is to confirm the variables are there ######  \
+\
+\
+#### This are the lines to get the actual or precise value of lambda for alpha = 1 #### \
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
+\cf0 \
+ ##### mdl_lasso <- train( AVGcryst ~ Age + Sex+ Income+education+FD+ DMN,\
+   data = train,\
+   method = "glmnet",\
+   metric = "RMSE",\
+   preProcess = c("center", "scale"),\
+   tuneGrid = expand.grid(\
+     .alpha = 1,  \
+     .lambda = seq(0, 5, length.out = 101)\
+   ),\
+   trControl = train_control) ###### \
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
+\cf0 \
+\
+\
+set.seed(91);\
+\
+half_size <- floor(0.67 * nrow(whole_final_cohort))\
+\
+random_sample <- sample(seq_len(nrow(whole_final_cohort)), size = half_size)\
+\
+train_data <- whole_final_cohort[random_sample, ]\
+\
+test_data <- whole_final_cohort[-random_sample, ]\
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
+\cf0 \
+train_data[ ,c("MRI_manufacture\'94,\'94education\'94,\'94Income\'94)]=as.factor(train_data[ ,c("MRI_manufacture\'94,\'94education\'94,\'94Income\'94)])\
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
+\cf0 \
+\
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
+\cf0 train_y=train_data[ ,c("composite_crystilized")]\
+train_x=model.matrix(composite_crystilized ~ Age + Sex+ Income+MRI_manufacturer+ education+FD+ DMN,train_data)[, -1] #Dropping the intercept column)\
+\
+ridge1_cv <- cv.glmnet(x = train_x, y =train_y,\
+                       ## type.measure: loss to use for cross-validation.\
+                       type.measure = "mse",\
+                       ## K = 10 is the default.\
+                       nfold = 10,\
+                       ## \'91alpha = 1\'92 is the lasso penalty, and \'91alpha = 0\'92 the ridge penalty.\
+                       alpha = 0)\
+\
+plot(ridge1_cv)\
+\
+best_ridge_coef <- as.numeric(coef(ridge1_cv, s = ridge1_cv$lambda.1se))[-1]\
+alasso1_cv <- cv.glmnet(x = train_x, y = train_y,\
+                        type.measure = "mse",\
+                        nfold = 10,\
+                        alpha = 1,\
+                        penalty.factor = 1 / abs(best_ridge_coef),\
+                        keep = TRUE)\
+best_alasso_coef_DMN_C <- coef(alasso1_cv, s = alasso1_cv$lambda.1se)\
+best_alasso_coef_DMN_C[-1,] \
+#### Variable importance using boost gradient descendent alghoritm #### \
+\
+model_gbmDMNcr= gbm(composite_crystilized ~ Age + Sex+ Income+MRI_manufacturer+ education+FD+ DMN,\
+                data = train_data,\
+                distribution = "gaussian",\
+                cv.folds = 10,\
+                shrinkage = .01,\
+                n.minobsinnode = 10,\
+                n.trees = 1000)\
+\
+summary(model_gbmDMNcr)\
+\
+\
+rel_imp_DMNcr=summary.gbm(model_gbmDMNcr)\
+\
+ rel_imp_DMNcr=data.frame(rel_imp_DMNcr)\
+\
+######### Now get the accuracy performance for the whole model  ######## \
+\
+\
+train_control <- trainControl(\
+  method = "repeatedcv",\
+  number = 10,  \
+  repeats = 5,\
+  savePredictions = "final"  \
+)\
+\
+\
+\
+\
+ mdl_lassoDMNcr <- train(composite_crystilized ~ Age + Sex+ Income+MRI_manufacturer+ education+FD+ DMN ,\
+   data = train_data,\
+   method = "glmnet",\
+   metric = "RMSE",\
+   preProcess = c("center", "scale"),\
+   tuneGrid = expand.grid(\
+     .alpha = 1,  # optimize a lasso regression\
+     .lambda = seq(0, 5, length.out = 101)\
+   ),\
+   trControl = train_control)\
+\
+\
+### gives optimal Laaso ## # \
+\
+mdl_lassoDMNcr$bestTune\
+\
+ggplot(mdl_lassoDMNcr) +\
+  labs(title = "Lasso Regression Parameter Tuning", x = "lambda")\
+\
+#### Gives the coefs of thre optimal model ### \
+\
+coef(mdl_lassoDMNcr$finalModel, mdl_lassoDMNcr$finalModel$lambdaOpt)\
+\
+\
+##### Make predictions on test data and test model performance #### \
+\
+pred.full <- predict(mdl_lassoDMNcr,newdata=test_data)\
+pred.lasso <- as.vector(predict(mdl_lassoDMNcr,test_data , s=mdl_lassoDMNcr$finalModel$lambdaOpt))\
+\
+\
+Actual_intelllicence= test_data[ ,c("composite_crystilized")]\
+\
+\
+cor_DMN_C=cor.test(Actual_intelllicence,pred.lasso,method="spearman")\
+\
+\
+reg<-lm(pred.lasso  ~ Actual_intelllicence)\
+\
+plot(Actual_intelllicence, pred.lasso , xlab="Observed score Crystalized Intelligence" ,\
+         ylab="Predicted values",font.lab=1,cex.lab=1.5, cex.sub=1.5)\
+\
+\
+reg_DMN_C<-lm( pred.lasso  ~Actual_intelllicence )\
+\
+abline(reg, col="blue",lwd=5)\
+\
+\
+\
+\
+train_x=model.matrix(composite_crystilized~ Age + Sex+ Income+education+FD+MRI_manufacturer+ DMN_VAN,train_data)[, -1] #Dropping the intercept column)\
+\
+ridge1_cv <- cv.glmnet(x = train_x, y =train_y,\
+                       ## type.measure: loss to use for cross-validation.\
+                       type.measure = "mse",\
+                       ## K = 10 is the default.\
+                       nfold = 10,\
+                       ## \'91alpha = 1\'92 is the lasso penalty, and \'91alpha = 0\'92 the ridge penalty.\
+                       alpha = 0)\
+\
+plot(ridge1_cv)\
+\
+best_ridge_coef <- as.numeric(coef(ridge1_cv, s = ridge1_cv$lambda.1se))[-1]\
+alasso1_cv <- cv.glmnet(x = train_x, y = train_y,\
+                        type.measure = "mse",\
+                        nfold = 10,\
+                        alpha = 1,\
+                        penalty.factor = 1 / abs(best_ridge_coef),\
+                        keep = TRUE)\
+best_alasso_coef_DMN_VAN_C<- coef(alasso1_cv, s = alasso1_cv$lambda.1se)\
+best_alasso_coef_DMN_VAN_C[-1,] \
+\
+model_gbmDMN_VANcr = gbm(composite_crystilized ~ Age + Sex+ Income+MRI_manufacturer+ education+FD+ DMN_VAN,\
+                data = train_data,\
+                distribution = "gaussian",\
+                cv.folds = 10,\
+                shrinkage = .01,\
+                n.minobsinnode = 10,\
+                n.trees = 1000)\
+\
+summary(model_gbmDMN_VANcr)\
+\
+ rel_imp_DMN_VANcr=summary.gbm(model_gbmDMN_VANcr)\
+\
+ rel_imp_DMN_VANcr=data.frame(rel_imp_DMN_VANcr)\
+\
+\
+\
+######### Now get the accuracy performance for the whole model  ######## \
+\
+\
+mdl_lassoDMN_VANcr <- train(composite_crystilized ~ Age + Sex+ Income+MRI_manufacturer+ education+FD+ DMN_VAN ,\
+   data = train_data,\
+   method = "glmnet",\
+   metric = "RMSE",\
+   preProcess = c("center", "scale"),\
+   tuneGrid = expand.grid(\
+     .alpha = 1,  # optimize a lasso regression\
+     .lambda = seq(0, 5, length.out = 101)\
+   ),\
+   trControl = train_control)\
+\
+\
+### gives optimal Laaso ## # \
+\
+mdl_lassoDMN_VANcr$bestTune\
+\
+ggplot(mdl_lassoDMN_VANcr) +\
+  labs(title = "Lasso Regression Parameter Tuning", x = "lambda")\
+\
+#### Gives the coefs of thre optimal model ### \
+\
+coef(mdl_lassoDMN_VANcr$finalModel, mdl_lassoDMN_VANcr$finalModel$lambdaOpt)\
+\
+\
+##### Make predictions on test data and test model performance #### \
+\
+pred.full <- predict(mdl_lassoDMN_VANcr,newdata=test_data)\
+pred.lasso <- as.vector(predict(mdl_lassoDMN_VANcr,test_data , s=mdl_lassoDMN_VANcr$finalModel$lambdaOpt))\
+\
+\
+cor_DMN_VAN_C=cor.test(Actual_intelllicence,pred.lasso,method="spearman")\
+\
+\
+reg<-lm(pred.lasso  ~ Actual_intelllicence)\
+\
+plot(Actual_intelllicence, pred.lasso , xlab="Observed score Crystalized Intelligence" ,\
+         ylab="Predicted values",font.lab=1,cex.lab=1.5, cex.sub=1.5)\
+\
+\
+reg_DMN_VAN_C<-lm( pred.lasso  ~Actual_intelllicence )\
+\
+abline(reg, col="blue",lwd=5)\
+\
+\
+\
+\
+\
+################\
+train_x=model.matrix(composite_crystilized~ Age + Sex+ Income+education+FD+MRI_manufacturer+ VAN,train_data)[, -1] #Dropping the intercept column)\
+ridge1_cv <- cv.glmnet(x = train_x, y =train_y,\
+                       ## type.measure: loss to use for cross-validation.\
+                       type.measure = "mse",\
+                       ## K = 10 is the default.\
+                       nfold = 10,\
+                       ## \'91alpha = 1\'92 is the lasso penalty, and \'91alpha = 0\'92 the ridge penalty.\
+                       alpha = 0)\
+\
+plot(ridge1_cv)\
+\
+best_ridge_coef <- as.numeric(coef(ridge1_cv, s = ridge1_cv$lambda.1se))[-1]\
+alasso1_cv <- cv.glmnet(x = train_x, y = train_y,\
+                        type.measure = "mse",\
+                        nfold = 10,\
+                        alpha = 1,\
+                        penalty.factor = 1 / abs(best_ridge_coef),\
+                        keep = TRUE)\
+best_alasso_coef_VAN_C <- coef(alasso1_cv, s = alasso1_cv$lambda.1se)\
+best_alasso_coef_VAN_C[-1,] \
+\
+model_gbmVANcr = gbm(composite_crystilized ~ Age + Sex+ Income+MRI_manufacturer+ education+FD+ VAN,\
+                data = train_data,\
+                distribution = "gaussian",\
+                cv.folds = 10,\
+                shrinkage = .01,\
+                n.minobsinnode = 10,\
+                n.trees = 1000)\
+\
+summary(model_gbmVANcr)\
+\
+rel_imp_VANcr=summary.gbm(model_gbmVANcr)\
+\
+ rel_imp_VANcr=data.frame(rel_imp_VANcr)\
+\
+\
+\
+\
+mdl_lassoVANcr <- train(composite_crystilized ~ Age + Sex+ Income+MRI_manufacturer+ education+FD+ VAN ,\
+   data = train_data,\
+   method = "glmnet",\
+   metric = "RMSE",\
+   preProcess = c("center", "scale"),\
+   tuneGrid = expand.grid(\
+     .alpha = 1,  # optimize a lasso regression\
+     .lambda = seq(0, 5, length.out = 101)\
+   ),\
+   trControl = train_control)\
+\
+\
+### gives optimal Laaso ## # \
+\
+mdl_lassoVANcr$bestTune\
+\
+ggplot(mdl_lassoVANcr) +\
+  labs(title = "Lasso Regression Parameter Tuning", x = "lambda")\
+\
+#### Gives the coefs of thre optimal model ### \
+\
+coef(mdl_lassoVANcr$finalModel, mdl_lassoVANcr$finalModel$lambdaOpt)\
+\
+\
+##### Make predictions on test data and test model performance #### \
+\
+pred.full <- predict(mdl_lassoVANcr,newdata=test_data)\
+pred.lasso <- as.vector(predict(mdl_lassoVANcr,test_data , s=mdl_lassoVANcr$finalModel$lambdaOpt))\
+\
+\
+cor_VAN_C=cor.test(Actual_intelllicence,pred.lasso,method="spearman")\
+\
+\
+reg<-lm(pred.lasso  ~ Actual_intelllicence)\
+\
+plot(Actual_intelllicence, pred.lasso , xlab="Observed score Crystalized Intelligence" ,\
+         ylab="Predicted values",font.lab=1,cex.lab=1.5, cex.sub=1.5)\
+\
+\
+reg_VAN_C<-lm( pred.lasso  ~Actual_intelllicence )\
+\
+abline(reg, col="blue",lwd=5)\
+\
+\
+\
+\
+\
+################\
+train_x=model.matrix(composite_crystilized~ Age + Sex+ Income+education+FD+MRI_manufacturer+ DAN,train_data)[, -1] #Dropping the intercept column)\
+ridge1_cv <- cv.glmnet(x = train_x, y =train_y,\
+                       ## type.measure: loss to use for cross-validation.\
+                       type.measure = "mse",\
+                       ## K = 10 is the default.\
+                       nfold = 10,\
+                       ## \'91alpha = 1\'92 is the lasso penalty, and \'91alpha = 0\'92 the ridge penalty.\
+                       alpha = 0)\
+\
+plot(ridge1_cv)\
+\
+best_ridge_coef <- as.numeric(coef(ridge1_cv, s = ridge1_cv$lambda.1se))[-1]\
+alasso1_cv <- cv.glmnet(x = train_x, y = train_y,\
+                        type.measure = "mse",\
+                        nfold = 10,\
+                        alpha = 1,\
+                        penalty.factor = 1 / abs(best_ridge_coef),\
+                        keep = TRUE)\
+best_alasso_coef_DAN_C<- coef(alasso1_cv, s = alasso1_cv$lambda.1se)\
+best_alasso_coef_DAN_C[-1,] \
+\
+model_gbmDANcr= gbm(composite_crystilized ~ Age + Sex+ Income+MRI_manufacturer+ education+FD+ DAN,\
+                data = train_data,\
+                distribution = "gaussian",\
+                cv.folds = 10,\
+                shrinkage = .01,\
+                n.minobsinnode = 10,\
+                n.trees = 1000)\
+\
+summary(model_gbmDANcr)\
+\
+\
+summary(model_gbmDANcr)\
+\
+rel_imp_DANcr=summary.gbm(model_gbmDANcr)\
+\
+ rel_imp_DANcr=data.frame(rel_imp_DANcr)\
+\
+\
+mdl_lassoDANcr <- train(composite_crystilized ~ Age + Sex+ Income+MRI_manufacturer+ education+FD+ DAN ,\
+   data = train_data,\
+   method = "glmnet",\
+   metric = "RMSE",\
+   preProcess = c("center", "scale"),\
+   tuneGrid = expand.grid(\
+     .alpha = 1,  # optimize a lasso regression\
+     .lambda = seq(0, 5, length.out = 101)\
+   ),\
+   trControl = train_control)\
+\
+\
+### gives optimal Laaso ## # \
+\
+mdl_lassoDANcr$bestTune\
+\
+ggplot(mdl_lassoDANcr) +\
+  labs(title = "Lasso Regression Parameter Tuning", x = "lambda")\
+\
+#### Gives the coefs of thre optimal model ### \
+\
+coef(mdl_lassoDANcr$finalModel, mdl_lassoDANcr$finalModel$lambdaOpt)\
+\
+\
+##### Make predictions on test data and test model performance #### \
+\
+pred.full <- predict(mdl_lassoDANcr,newdata=test_data)\
+pred.lasso <- as.vector(predict(mdl_lassoDANcr,test_data , s=mdl_lassoDANcr$finalModel$lambdaOpt))\
+\
+\
+cor_DAN_C=cor.test(Actual_intelllicence,pred.lasso,method="spearman")\
+\
+\
+reg<-lm(pred.lasso  ~ Actual_intelllicence)\
+\
+plot(Actual_intelllicence, pred.lasso , xlab="Observed score Crystalized Intelligence" ,\
+         ylab="Predicted values",font.lab=1,cex.lab=1.5, cex.sub=1.5)\
+\
+\
+reg_DAN_C<-lm( pred.lasso  ~Actual_intelllicence )\
+\
+abline(reg, col="blue",lwd=5)\
+\
+\
+\
+\
+\
+\
+\
+\
+######################\
+\
+################\
+train_x=model.matrix(composite_crystilized~ Age + Sex+ Income+education+FD+MRI_manufacturer+ DMN_DAN,train_data)[, -1] #Dropping the intercept column)\
+\
+ridge1_cv <- cv.glmnet(x = train_x, y =train_y,\
+                       ## type.measure: loss to use for cross-validation.\
+                       type.measure = "mse",\
+                       ## K = 10 is the default.\
+                       nfold = 10,\
+                       ## \'91alpha = 1\'92 is the lasso penalty, and \'91alpha = 0\'92 the ridge penalty.\
+                       alpha = 0)\
+\
+plot(ridge1_cv)\
+\
+best_ridge_coef <- as.numeric(coef(ridge1_cv, s = ridge1_cv$lambda.1se))[-1]\
+alasso1_cv <- cv.glmnet(x = train_x, y = train_y,\
+                        type.measure = "mse",\
+                        nfold = 10,\
+                        alpha = 1,\
+                        penalty.factor = 1 / abs(best_ridge_coef),\
+                        keep = TRUE)\
+best_alasso_coef_DMN_DAN_C <- coef(alasso1_cv, s = alasso1_cv$lambda.1se)\
+best_alasso_coef_DMN_DAN_C[-1,] \
+model_gbmDMN_DANcr = gbm(composite_crystilized ~ Age + Sex+ Income+MRI_manufacturer+ education+FD+ DMN_DAN,\
+                data = train_data,\
+                distribution = "gaussian",\
+                cv.folds = 10,\
+                shrinkage = .01,\
+                n.minobsinnode = 10,\
+                n.trees = 1000)\
+\
+summary(model_gbmDMN_DANcr)\
+\
+\
+\
+rel_imp_DMN_DANcr=summary.gbm(model_gbmDMN_DANcr)\
+\
+ rel_imp_DMN_DANcr=data.frame(rel_imp_DMN_DANcr)\
+\
+\
+\
+\
+mdl_lassoDMN_DANcr <- train(composite_crystilized ~ Age + Sex+ Income+MRI_manufacturer+ education+FD+ DMN_DAN ,\
+   data = train_data,\
+   method = "glmnet",\
+   metric = "RMSE",\
+   preProcess = c("center", "scale"),\
+   tuneGrid = expand.grid(\
+     .alpha = 1,  # optimize a lasso regression\
+     .lambda = seq(0, 5, length.out = 101)\
+   ),\
+   trControl = train_control)\
+\
+\
+### gives optimal Laaso ## # \
+\
+mdl_lassoDMN_DANcr$bestTune\
+\
+ggplot(mdl_lassoDANcr) +\
+  labs(title = "Lasso Regression Parameter Tuning", x = "lambda")\
+\
+#### Gives the coefs of thre optimal model ### \
+\
+coef(mdl_lassoDMN_DANcr$finalModel, mdl_lassoDMN_DANcr$finalModel$lambdaOpt)\
+\
+\
+##### Make predictions on test data and test model performance #### \
+\
+pred.full <- predict(mdl_lassoDMN_DANcr,newdata=test_data)\
+pred.lasso <- as.vector(predict(mdl_lassoDMN_DANcr,test_data , s=mdl_lassoDMN_DANcr$finalModel$lambdaOpt))\
+\
+\
+cor_DMN_DAN_C=cor.test(Actual_intelllicence,pred.lasso,method="spearman")\
+\
+plot(Actual_intelllicence, pred.lasso , xlab="Observed score Crystalized Intelligence" ,\
+         ylab="Predicted values",font.lab=1,cex.lab=1.5, cex.sub=1.5)\
+\
+\
+reg_DMN_DAN_C<-lm( pred.lasso  ~Actual_intelllicence )\
+\
+abline(reg, col="blue",lwd=5)\
+\
+\
+####################\
+####################\
+\
+train_x=model.matrix(composite_crystilized~ Age + Sex+ Income+education+FD+MRI_manufacturer+ VAN_DAN,train_data)[, -1] #Dropping the intercept column)\
+ridge1_cv <- cv.glmnet(x = train_x, y =train_y,\
+                       ## type.measure: loss to use for cross-validation.\
+                       type.measure = "mse",\
+                       ## K = 10 is the default.\
+                       nfold = 10,\
+                       ## \'91alpha = 1\'92 is the lasso penalty, and \'91alpha = 0\'92 the ridge penalty.\
+                       alpha = 0)\
+\
+plot(ridge1_cv)\
+\
+best_ridge_coef <- as.numeric(coef(ridge1_cv, s = ridge1_cv$lambda.1se))[-1]\
+alasso1_cv <- cv.glmnet(x = train_x, y = train_y,\
+                        type.measure = "mse",\
+                        nfold = 10,\
+                        alpha = 1,\
+                        penalty.factor = 1 / abs(best_ridge_coef),\
+                        keep = TRUE)\
+best_alasso_coef_VAN_DAN_C <- coef(alasso1_cv, s = alasso1_cv$lambda.1se)\
+best_alasso_coef_VAN_DAN_C[-1,] \
+\
+model_gbmVAN_DANcr = gbm(composite_crystilized ~ Age + Sex+ Income+MRI_manufacturer+ education+FD+ VAN_DAN,\
+                data = train_data,\
+                distribution = "gaussian",\
+                cv.folds = 10,\
+                shrinkage = .01,\
+                n.minobsinnode = 10,\
+                n.trees = 1000)\
+\
+summary(model_gbmVAN_DANcr)\
+\
+\
+rel_imp_VAN_DANcr=summary.gbm(model_gbmVAN_DANcr)\
+\
+ rel_imp_VAN_DANcr=data.frame(rel_imp_VAN_DANcr)\
+\
+\
+\
+mdl_lassoVAN_DANcr <- train(composite_crystilized ~ Age + Sex+ Income+MRI_manufacturer+ education+FD+ VAN_DAN ,\
+   data = train_data,\
+   method = "glmnet",\
+   metric = "RMSE",\
+   preProcess = c("center", "scale"),\
+   tuneGrid = expand.grid(\
+     .alpha = 1,  # optimize a lasso regression\
+     .lambda = seq(0, 5, length.out = 101)\
+   ),\
+   trControl = train_control)\
+\
+\
+### gives optimal Laaso ## # \
+\
+mdl_lassoVAN_DANcr$bestTune\
+\
+ggplot(mdl_lassoVAN_DANcr) +\
+  labs(title = "Lasso Regression Parameter Tuning", x = "lambda")\
+\
+#### Gives the coefs of thre optimal model ### \
+\
+coef(mdl_lassoVAN_DANcr$finalModel, mdl_lassoVAN_DANcr$finalModel$lambdaOpt)\
+\
+\
+##### Make predictions on test data and test model performance #### \
+\
+pred.full <- predict(mdl_lassoVAN_DANcr,newdata=test_data)\
+pred.lasso <- as.vector(predict(mdl_lassoVAN_DANcr,test_data , s=mdl_lassoVAN_DANcr$finalModel$lambdaOpt))\
+\
+\
+cor_VAN_DAN_C=cor.test(Actual_intelllicence,pred.lasso,method="spearman")\
+\
+plot(Actual_intelllicence, pred.lasso , xlab="Observed score Crystalized Intelligence" ,\
+         ylab="Predicted values",font.lab=1,cex.lab=1.5, cex.sub=1.5)\
+\
+\
+reg_VAN_DAN_C<-lm( pred.lasso  ~Actual_intelllicence )\
+\
+abline(reg, col="blue",lwd=5)\
+\
+\
+\
+\
+\
+A= rel_imp_DMNcr[,-1]\
+B=rel_imp_DMN_DANcr [,-1]\
+C=rel_imp_DMN_VANcr [,-1]\
+D=rel_imp_VANcr [,-1]\
+E=rel_imp_DANcr [,-1]\
+F=rel_imp_VAN_DANc[,-1]\
+\
+rel_imp_cry=rbind()\
+\
+rel_imp_cry=rbind(A,B,C,D,E,F)\
+\
+colnames(rel_imp_cry)[1]  <- "Education"\
+ colnames(rel_imp_cry)[3]  <- "Network_Connectivity"\
+ colnames(rel_imp_cry)[4]  <- "FD"\
+ colnames(rel_imp_cry)[5]  <- "Sex"\
+ colnames(rel_imp_cry)[6]  <- "Income"\
+ colnames(rel_imp_cry)[7]  <- "MRI_manufacturer"\
+\
+row.names(rel_imp_cry)[1] <-   "DMN"\
+row.names(rel_imp_cry)[2] <-   "DMN_DAN"\
+row.names(rel_imp_cry)[3] <-   "DMN_VAN"\
+row.names(rel_imp_cry)[4] <-   "VAN"\
+row.names(rel_imp_cry)[5] <-   "DAN"\
+row.names(rel_imp_cry)[6] <-   "VAN DAN"\
+\
+\
+\
+library('plot.matrix')\
+data(Titanic.cramer)\
+par(mar=c(5.1, 4.1, 4.1, 4.1)) # adapt margins\
+plot(as.assoc(el_imp_cry))\
+\
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
+\cf0 \
+\
+#################### Now for fluid intelligence ############################\
+\
+\
+\
+\
+train_y=train_data[ ,c("composite_fluid")]\
+train_x=model.matrix(composite_fluid ~ Age + Sex+ Income+MRI_manufacturer+ education+FD+ DMN,train_data)[, -1] #Dropping the intercept column)\
+\
+ridge1_cv <- cv.glmnet(x = train_x, y =train_y,\
+                       ## type.measure: loss to use for cross-validation.\
+                       type.measure = "mse",\
+                       ## K = 10 is the default.\
+                       nfold = 10,\
+                       ## \'91alpha = 1\'92 is the lasso penalty, and \'91alpha = 0\'92 the ridge penalty.\
+                       alpha = 0)\
+\
+plot(ridge1_cv)\
+\
+best_ridge_coef <- as.numeric(coef(ridge1_cv, s = ridge1_cv$lambda.1se))[-1]\
+alasso1_cv <- cv.glmnet(x = train_x, y = train_y,\
+                        type.measure = "mse",\
+                        nfold = 10,\
+                        alpha = 1,\
+                        penalty.factor = 1 / abs(best_ridge_coef),\
+                        keep = TRUE)\
+best_alasso_coef_DMN_F <- coef(alasso1_cv, s = alasso1_cv$lambda.1se)\
+best_alasso_coef_DMN_F[-1,] \
+\
+\
+\
+model_gbmDMNf = gbm(composite_crystilized ~ Age + Sex+ Income+MRI_manufacturer+ education+FD+ DMN,\
+                data = train_data,\
+                distribution = "gaussian",\
+                cv.folds = 10,\
+                shrinkage = .01,\
+                n.minobsinnode = 10,\
+                n.trees = 1000)\
+\
+summary(model_gbmDMNf)\
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
+\cf0 \
+\
+summary(model_gbmDMNf)\
+\
+\
+rel_imp_DMNf=summary.gbm(model_gbmDMNf)\
+ rel_imp_DMNf=data.frame(rel_imp_DMNf)\
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
+\cf0 \
+\
+\
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
+\cf0  mdl_lassoDMNf <- train(composite_fluid~ Age + Sex+ Income+MRI_manufacturer+ education+FD+ DMN ,\
+   data = train_data,\
+   method = "glmnet",\
+   metric = "RMSE",\
+   preProcess = c("center", "scale"),\
+   tuneGrid = expand.grid(\
+     .alpha = 1,  # optimize a lasso regression\
+     .lambda = seq(0, 5, length.out = 101)\
+   ),\
+   trControl = train_control)\
+### gives optimal Laaso ## # \
+\
+mdl_lassoDMNf$bestTune\
+\
+ggplot(mdl_lassoDMNf) +\
+  labs(title = "Lasso Regression Parameter Tuning", x = "lambda")\
+\
+#### Gives the coefs of thre optimal model ### \
+\
+coef(mdl_lassoDMNf$finalModel, mdl_lassoDMNf$finalModel$lambdaOpt)\
+##### Make predictions on test data and test model performance #### \
+\
+pred.full <- predict(mdl_lassoDMNf,newdata=test_data)\
+pred.lasso <- as.vector(predict(mdl_lassoDMNf,test_data , s=mdl_lassoDMNf$finalModel$lambdaOpt))\
+Actual_intelllicence= test_data[ ,c("composite_fluid ")]\
+cor_DMN_F=cor.test(Actual_intelllicence,pred.lasso,method="spearman")\
+plot(Actual_intelllicence, pred.lasso , xlab="Observed score Fluid Intelligence" ,\
+         ylab="Predicted values",font.lab=1,cex.lab=1.5, cex.sub=1.5)\
+reg_DMN_F<-lm( pred.lasso  ~Actual_intelllicence )\
+\
+abline(reg_DMN_F, col="blue",lwd=5)\
+\
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
+\cf0 \
+\
+\
+\
+\
+\
+\
+#####################\
+\
+\
+train_x=model.matrix(composite_fluid~ Age + Sex+ Income+education+FD+MRI_manufacturer+ DMN_DAN,train_data)[, -1] #Dropping the intercept column)\
+\
+ridge1_cv <- cv.glmnet(x = train_x, y =train_y,\
+                       ## type.measure: loss to use for cross-validation.\
+                       type.measure = "mse",\
+                       ## K = 10 is the default.\
+                       nfold = 10,\
+                       ## \'91alpha = 1\'92 is the lasso penalty, and \'91alpha = 0\'92 the ridge penalty.\
+                       alpha = 0)\
+\
+plot(ridge1_cv)\
+\
+best_ridge_coef <- as.numeric(coef(ridge1_cv, s = ridge1_cv$lambda.1se))[-1]\
+alasso1_cv <- cv.glmnet(x = train_x, y = train_y,\
+                        type.measure = "mse",\
+                        nfold = 10,\
+                        alpha = 1,\
+                        penalty.factor = 1 / abs(best_ridge_coef),\
+                        keep = TRUE)\
+\
+est_alasso_coef_DMN_DAN_F <- coef(alasso1_cv, s = alasso1_cv$lambda.1se)\
+best_alasso_coef_DMN_DAN_F[-1,] \
+model_gbmDMN_DANf = gbm(composite_fluid ~ Age + Sex+ Income+MRI_manufacturer+ education+FD+ DMN_DAN,\
+                data = train_data,\
+                distribution = "gaussian",\
+                cv.folds = 10,\
+                shrinkage = .01,\
+                n.minobsinnode = 10,\
+                n.trees = 1000)\
+\
+summary(model_gbmDMN_DANf)\
+\
+\
+\
+rel_imp_DMN_DANf=summary.gbm(model_gbmDMN_DANf)\
+\
+ rel_imp_DMN_DANf=data.frame(rel_imp_DMN_DANf)\
+\
+\
+\
+\
+mdl_lassoDMN_DANf <- train(composite_fluid~ Age + Sex+ Income+MRI_manufacturer+ education+FD+ DMN_DAN ,\
+   data = train_data,\
+   method = "glmnet",\
+   metric = "RMSE",\
+   preProcess = c("center", "scale"),\
+   tuneGrid = expand.grid(\
+     .alpha = 1,  # optimize a lasso regression\
+     .lambda = seq(0, 5, length.out = 101)\
+   ),\
+   trControl = train_control)\
+\
+\
+### gives optimal Laaso ## # \
+\
+mdl_lassoDMN_DANf$bestTune\
+\
+ggplot(mdl_lassoDMN_DANf) +\
+  labs(title = "Lasso Regression Parameter Tuning", x = "lambda")\
+\
+#### Gives the coefs of thre optimal model ### \
+\
+coef(mdl_lassoDMN_DANf$finalModel, mdl_lassoDMN_DANf$finalModel$lambdaOpt)\
+\
+\
+##### Make predictions on test data and test model performance #### \
+\
+pred.full <- predict(mdl_lassoDMN_DANf,newdata=test_data)\
+pred.lasso <- as.vector(predict(mdl_lassoDMN_DANf,test_data , s=mdl_lassoDMN_DANf$finalModel$lambdaOpt))\
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
+\cf0 \
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
+\cf0 \
+\
+cor_DMN_DAN_F=cor.test(Actual_intelllicence,pred.lasso,method="spearman")\
+\
+\
+plot(Actual_intelllicence, pred.lasso , xlab="Observed score Fluid Intelligence" ,\
+         ylab="Predicted values",font.lab=1,cex.lab=1.5, cex.sub=1.5)\
+\
+\
+reg_DMN_DAN_F<-lm( pred.lasso  ~Actual_intelllicence )\
+\
+abline(reg_DMN_DAN_F, col="blue",lwd=5)\
+\
+\
+\
+\
+\
+\
+\
+\
+\
+\
+\
+\
+train_x=model.matrix(composite_fluid~ Age + Sex+ Income+education+FD+MRI_manufacturer+ DMN_VAN,train_data)[, -1] #Dropping the intercept column)\
+\
+ridge1_cv <- cv.glmnet(x = train_x, y =train_y,\
+                       ## type.measure: loss to use for cross-validation.\
+                       type.measure = "mse",\
+                       ## K = 10 is the default.\
+                       nfold = 10,\
+                       ## \'91alpha = 1\'92 is the lasso penalty, and \'91alpha = 0\'92 the ridge penalty.\
+                       alpha = 0)\
+\
+plot(ridge1_cv)\
+\
+best_ridge_coef <- as.numeric(coef(ridge1_cv, s = ridge1_cv$lambda.1se))[-1]\
+alasso1_cv <- cv.glmnet(x = train_x, y = train_y,\
+                        type.measure = "mse",\
+                        nfold = 10,\
+                        alpha = 1,\
+                        penalty.factor = 1 / abs(best_ridge_coef),\
+                        keep = TRUE)\
+best_alasso_coef_DMN_VAN_F<- coef(alasso1_cv, s = alasso1_cv$lambda.1se)\
+best_alasso_coef_DMN_VAN_F[-1,] \
+\
+model_gbmDMN_VANf = gbm(composite_fluid~ Age + Sex+ Income+MRI_manufacturer+ education+FD+ DMN_VAN,\
+                data = train_data,\
+                distribution = "gaussian",\
+                cv.folds = 10,\
+                shrinkage = .01,\
+                n.minobsinnode = 10,\
+                n.trees = 1000)\
+\
+summary(model_gbmDMN_VANf)\
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
+\cf0 \
+rel_imp_DMN_VANf=summary.gbm(model_gbmDMN_VANf)\
+\
+ rel_imp_DMN_VANf=data.frame(rel_imp_DMN_VANf)\
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
+\cf0 \
+\
+\
+mdl_lassoDMN_VANf <- train(composite_fluid~ Age + Sex+ Income+MRI_manufacturer+ education+FD+ DMN_VAN ,\
+   data = train_data,\
+   method = "glmnet",\
+   metric = "RMSE",\
+   preProcess = c("center", "scale"),\
+   tuneGrid = expand.grid(\
+     .alpha = 1,  # optimize a lasso regression\
+     .lambda = seq(0, 5, length.out = 101)\
+   ),\
+   trControl = train_control)\
+### gives optimal Laaso ## # \
+\
+mdl_lassoDMN_VANf$bestTune\
+\
+ggplot(mdl_lassoDMN_VANf) +\
+  labs(title = "Lasso Regression Parameter Tuning", x = "lambda")\
+\
+#### Gives the coefs of thre optimal model ### \
+\
+coef(mdl_lassoDMN_VANf$finalModel, mdl_lassoDMN_VANf$finalModel$lambdaOpt)\
+##### Make predictions on test data and test model performance #### \
+\
+pred.full <- predict(mdl_lassoDMN_VANf,newdata=test_data)\
+pred.lasso <- as.vector(predict(mdl_lassoDMN_VANf,test_data , s=mdl_lassoDMN_VANf$finalModel$lambdaOpt))\
+Actual_intelllicence= test_data[ ,c("composite_fluid")]\
+cor_DMN_VAN_F=cor.test(Actual_intelllicence,pred.lasso,method="spearman")\
+plot(Actual_intelllicence, pred.lasso , xlab="Observed score Fluid Intelligence" ,\
+         ylab="Predicted values",font.lab=1,cex.lab=1.5, cex.sub=1.5)\
+reg_DMN_VAN_F<-lm( pred.lasso  ~Actual_intelllicence )\
+\
+abline(reg_DMN_VAN_F, col="blue",lwd=5)\
+\
+\
+\
+################\
+\
+train_x=model.matrix(composite_fluid~ Age + Sex+ Income+education+FD+MRI_manufacturer+ VAN,train_data)[, -1] #Dropping the intercept column)\
+ridge1_cv <- cv.glmnet(x = train_x, y =train_y,\
+                       ## type.measure: loss to use for cross-validation.\
+                       type.measure = "mse",\
+                       ## K = 10 is the default.\
+                       nfold = 10,\
+                       ## \'91alpha = 1\'92 is the lasso penalty, and \'91alpha = 0\'92 the ridge penalty.\
+                       alpha = 0)\
+\
+plot(ridge1_cv)\
+\
+best_ridge_coef <- as.numeric(coef(ridge1_cv, s = ridge1_cv$lambda.1se))[-1]\
+alasso1_cv <- cv.glmnet(x = train_x, y = train_y,\
+                        type.measure = "mse",\
+                        nfold = 10,\
+                        alpha = 1,\
+                        penalty.factor = 1 / abs(best_ridge_coef),\
+                        keep = TRUE)\
+best_alasso_coef_VAN_F <- coef(alasso1_cv, s = alasso1_cv$lambda.1se)\
+best_alasso_coef_VAN_F[-1,] \
+\
+model_gbmVANf = gbm(composite_fluid ~ Age + Sex+ Income+MRI_manufacturer+ education+FD+ VAN,\
+                data = train_data,\
+                distribution = "gaussian",\
+                cv.folds = 10,\
+                shrinkage = .01,\
+                n.minobsinnode = 10,\
+                n.trees = 1000)\
+\
+summary(model_gbmVANf)\
+\
+rel_imp_VANf=summary.gbm(model_gbmVANf)\
+\
+ rel_imp_VANf=data.frame(rel_imp_VANf)\
+\
+\
+\
+\
+mdl_lassoVANf <- train(composite_fluid~ Age + Sex+ Income+MRI_manufacturer+ education+FD+ VAN ,\
+   data = train_data,\
+   method = "glmnet",\
+   metric = "RMSE",\
+   preProcess = c("center", "scale"),\
+   tuneGrid = expand.grid(\
+     .alpha = 1,  # optimize a lasso regression\
+     .lambda = seq(0, 5, length.out = 101)\
+   ),\
+   trControl = train_control)\
+### gives optimal Laaso ## # \
+\
+mdl_lassoVANf$bestTune\
+\
+ggplot(mdl_lassoVANf) +\
+  labs(title = "Lasso Regression Parameter Tuning", x = "lambda")\
+\
+#### Gives the coefs of thre optimal model ### \
+\
+coef(mdl_lassoVANf$finalModel, mdl_lassoVANf$finalModel$lambdaOpt)\
+##### Make predictions on test data and test model performance #### \
+\
+pred.full <- predict(mdl_lassoVANf,newdata=test_data)\
+pred.lasso <- as.vector(predict(mdl_lassoVANf,test_data , s=mdl_lassoVANf$finalModel$lambdaOpt))\
+Actual_intelllicence= test_data[ ,c("composite_fluid")]\
+cor_VAN_F=cor.test(Actual_intelllicence,pred.lasso,method="spearman")\
+plot(Actual_intelllicence, pred.lasso , xlab="Observed score Fluid Intelligence" ,\
+         ylab="Predicted values",font.lab=1,cex.lab=1.5, cex.sub=1.5)\
+reg_VAN_F<-lm( pred.lasso  ~Actual_intelllicence )\
+\
+abline(reg_VAN_F, col="blue",lwd=5)\
+\
+\
+################\
+\
+train_x=model.matrix(composite_fluid~ Age + Sex+ Income+education+FD+MRI_manufacturer+ DAN,train_data)[, -1] #Dropping the intercept column)\
+ridge1_cv <- cv.glmnet(x = train_x, y =train_y,\
+                       ## type.measure: loss to use for cross-validation.\
+                       type.measure = "mse",\
+                       ## K = 10 is the default.\
+                       nfold = 10,\
+                       ## \'91alpha = 1\'92 is the lasso penalty, and \'91alpha = 0\'92 the ridge penalty.\
+                       alpha = 0)\
+\
+plot(ridge1_cv)\
+\
+best_ridge_coef <- as.numeric(coef(ridge1_cv, s = ridge1_cv$lambda.1se))[-1]\
+alasso1_cv <- cv.glmnet(x = train_x, y = train_y,\
+                        type.measure = "mse",\
+                        nfold = 10,\
+                        alpha = 1,\
+                        penalty.factor = 1 / abs(best_ridge_coef),\
+                        keep = TRUE)\
+best_alasso_coef_DAN_F<- coef(alasso1_cv, s = alasso1_cv$lambda.1se)\
+best_alasso_coef_DAN_F[-1,] \
+\
+model_gbmDANf = gbm(composite_fluid ~ Age + Sex+ Income+MRI_manufacturer+ education+FD+ DAN,\
+                data = train_data,\
+                distribution = "gaussian",\
+                cv.folds = 10,\
+                shrinkage = .01,\
+                n.minobsinnode = 10,\
+                n.trees = 1000)\
+\
+summary(model_gbmDANf)\
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
+\cf0 \
+rel_imp_DANf=summary.gbm(model_gbmDANf)\
+\
+ rel_imp_DANf=data.frame(rel_imp_DANf)\
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
+\cf0 \
+\
+\
+\
+mdl_lassoDANf <- train(composite_fluid~ Age + Sex+ Income+MRI_manufacturer+ education+FD+ DAN ,\
+   data = train_data,\
+   method = "glmnet",\
+   metric = "RMSE",\
+   preProcess = c("center", "scale"),\
+   tuneGrid = expand.grid(\
+     .alpha = 1,  # optimize a lasso regression\
+     .lambda = seq(0, 5, length.out = 101)\
+   ),\
+   trControl = train_control)\
+\
+\
+### gives optimal Laaso ## # \
+\
+mdl_lassoDANf$bestTune\
+\
+ggplot(mdl_lassoDANf) +\
+  labs(title = "Lasso Regression Parameter Tuning", x = "lambda")\
+\
+#### Gives the coefs of thre optimal model ### \
+\
+coef(mdl_lassoDANf$finalModel, mdl_lassoDANf$finalModel$lambdaOpt)\
+\
+\
+##### Make predictions on test data and test model performance #### \
+\
+pred.full <- predict(mdl_lassoDANf,newdata=test_data)\
+pred.lasso <- as.vector(predict(mdl_lassoDANf,test_data , s=mdl_lassoDANf$finalModel$lambdaOpt))\
+\
+Actual_intelllicence= test_data[ ,c("composite_fluid")]\
+\
+\
+cor_DAN_F=cor.test(Actual_intelllicence,pred.lasso,method="spearman")\
+\
+\
+plot(Actual_intelllicence, pred.lasso , xlab="Observed score Fluid Intelligence" ,\
+         ylab="Predicted values",font.lab=1,cex.lab=1.5, cex.sub=1.5)\
+\
+\
+reg_DAN_F<-lm( pred.lasso  ~Actual_intelllicence )\
+\
+abline(reg_DAN_F, col="blue",lwd=5)\
+\
+##### \
+\
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
+\cf0 \
+\
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
+\cf0 \
+####################\
+####################\
+\
+train_x=model.matrix(composite_fluid~ Age + Sex+ Income+education+FD+MRI_manufacturer+ VAN_DAN,train_data)[, -1] #Dropping the intercept column)\
+ridge1_cv <- cv.glmnet(x = train_x, y =train_y,\
+                       ## type.measure: loss to use for cross-validation.\
+                       type.measure = "mse",\
+                       ## K = 10 is the default.\
+                       nfold = 10,\
+                       ## \'91alpha = 1\'92 is the lasso penalty, and \'91alpha = 0\'92 the ridge penalty.\
+                       alpha = 0)\
+\
+plot(ridge1_cv)\
+\
+best_ridge_coef <- as.numeric(coef(ridge1_cv, s = ridge1_cv$lambda.1se))[-1]\
+alasso1_cv <- cv.glmnet(x = train_x, y = train_y,\
+                        type.measure = "mse",\
+                        nfold = 10,\
+                        alpha = 1,\
+                        penalty.factor = 1 / abs(best_ridge_coef),\
+                        keep = TRUE)\
+best_alasso_coef_VAN_DAN_F <- coef(alasso1_cv, s = alasso1_cv$lambda.1se)\
+best_alasso_coef_VAN_DAN_F[-1,] \
+\
+model_gbmVAN_DANf = gbm(composite_crystilized ~ Age + Sex+ Income+MRI_manufacturer+ education+FD+ VAN_DAN,\
+                data = train_data,\
+                distribution = "gaussian",\
+                cv.folds = 10,\
+                shrinkage = .01,\
+                n.minobsinnode = 10,\
+                n.trees = 1000)\
+\
+summary(model_gbmVAN_DANf)\
+\
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
+\cf0 \
+rel_imp_VAN_DANf=summary.gbm(model_gbmVAN_DANf)\
+\
+ rel_imp_VAN_DANf=data.frame(rel_imp_VAN_DANf)\
+\
+\
+mdl_lassoVAN_DANf <- train(composite_fluid~ Age + Sex+ Income+MRI_manufacturer+ education+FD+VAN_DAN ,\
+   data = train_data,\
+   method = "glmnet",\
+   metric = "RMSE",\
+   preProcess = c("center", "scale"),\
+   tuneGrid = expand.grid(\
+     .alpha = 1,  # optimize a lasso regression\
+     .lambda = seq(0, 5, length.out = 101)\
+   ),\
+   trControl = train_control)\
+\
+\
+### gives optimal Laaso ## # \
+\
+mdl_lassoVAN_DANf$bestTune\
+\
+ggplot(mdl_lassoVAN_DANf) +\
+  labs(title = "Lasso Regression Parameter Tuning", x = "lambda")\
+\
+#### Gives the coefs of thre optimal model ### \
+\
+coef(mdl_lassoVAN_DANf$finalModel, mdl_lassoVAN_DANf$finalModel$lambdaOpt)\
+\
+\
+##### Make predictions on test data and test model performance #### \
+\
+pred.full <- predict(mdl_lassoVAN_DANf,newdata=test_data)\
+pred.lasso <- as.vector(predict(mdl_lassoVAN_DANf,test_data , s=mdl_lassoVAN_DANf$finalModel$lambdaOpt))\
+\
+Actual_intelllicence= test_data[ ,c("composite_fluid")]\
+\
+\
+cor_VAN_DAN_F=cor.test(Actual_intelllicence,pred.lasso,method="spearman")\
+\
+\
+plot(Actual_intelllicence, pred.lasso , xlab="Observed score Fluid Intelligence" ,\
+         ylab="Predicted values",font.lab=1,cex.lab=1.5, cex.sub=1.5)\
+\
+\
+reg_VAN_DAN_F<-lm( pred.lasso  ~Actual_intelllicence )\
+\
+abline(reg_VAN_DAN_F, col="blue",lwd=5)\
+\
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
+\cf0 \
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
+\cf0 \
+AA= rel_imp_DMNf[,-1]\
+BB=rel_imp_DMN_DANf [,-1]\
+CC=rel_imp_DMN_VANf [,-1]\
+DD=rel_imp_VANf [,-1]\
+EE=rel_imp_DANf [,-1]\
+FF=rel_imp_VAN_DANf[,-1]\
+\
+\
+rel_imp_flu=rbind(AA,BB,CC,DD,EE,FF)\
+\
+ colnames(rel_imp_flu)[1]  <- "Education"\
+ colnames(rel_imp_flu)[2]  <- \'93Age\'94\
+ colnames(rel_imp_flu)[3]  <- "Network_Connectivity"\
+ colnames(rel_imp_flu)[4]  <- "FD"\
+ colnames(rel_imp_flu)[5]  <- "Sex"\
+ colnames(rel_imp_flu)[6]  <- "Income"\
+ colnames(rel_imp_flu)[7]  <- "MRI_manufacturer"\
+\
+row.names(rel_imp_flu)[1] <-   "DMN"\
+row.names(rel_imp_flu)[2] <-   "DMN_DAN"\
+row.names(rel_imp_flu)[3] <-   "DMN_VAN"\
+row.names(rel_imp_flu)[4] <-   "VAN"\
+row.names(rel_imp_flu)[5] <-   "DAN"\
+row.names(rel_imp_flu)[6] <-   "VAN DAN"\
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
+\cf0 \
+\
+\
+\
+\
+
+\f1\b \
+
+\f0\b0 ############################################################## Now ridge projection for the non-zero coefs calculated before and adding to the penalization factor correction for FWE to the coefficients with Holm-Bonferroni  #################################\
+\
+library(hdi)\
+\
+\
+\
+###### P values of the ridge projection LASSO ########\
+\
+####  Crystilized intelligence ##### \
+\
+\
+set.seed(188)\
+\
+\
+y=whole_final_cohort[ ,c("composite_crystilized")]\
+\
+x=model.matrix(composite_crystilized ~ Age + Sex+ Income+MRI_manufacturer+ education+FD+ DMN,whole_final_cohort)[, -1] #Dropping the intercept column)\
+fit.ridge <- ridge.proj(x, y,multiplecorr.method ="bonferroni")\
+fit.ridge.scaled  <- ridge.proj(x, y, betainit = "scaled lasso",multiplecorr.method = "bonferroni")\
+\
+pvalues_FWEc_DMN_cry=fit.ridge.scaled$pval.corr \
+fit.lasso.robust <- lasso.proj(x, y, robust = TRUE)\
+pvalues_robust_DMN_cry=fit.lasso.robust $pval.corr \
+\
+\
+\
+x=model.matrix(composite_crystilized ~ Age + Sex+ Income+MRI_manufacturer+ education+FD+ DMN_DAN,whole_final_cohort)[, -1] #Dropping the intercept column)\
+fit.ridge <- ridge.proj(x, y,multiplecorr.method = "bonferroni")\
+fit.ridge.scaled  <- ridge.proj(x, y, betainit = "scaled lasso",multiplecorr.method = "bonferroni")\
+\
+\
+pvalues_FWEc_DMN_DAN_cry=fit.ridge.scaled$pval.corr \
+fit.lasso.robust <- lasso.proj(x, y, robust = TRUE)\
+fit.lasso.robust $pval.corr \
+pvalues_robust_DMN_DAN_cry=fit.lasso.robust $pval.corr \
+\
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4226\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
+\cf0 \
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
+\cf0 x=model.matrix(composite_crystilized ~ Age + Sex+ Income+MRI_manufacturer+ education+FD+ DMN_VAN,whole_final_cohort)[, -1] #Dropping the intercept column)\
+fit.ridge <- ridge.proj(x, y,multiplecorr.method = "bonferroni")\
+fit.ridge.scaled  <- ridge.proj(x, y, betainit = "scaled lasso",multiplecorr.method = "bonferroni")\
+pvalues_DMN_VAN_cry=fit.ridge.scaled$pval.corr  \
+fit.lasso.robust <- lasso.proj(x, y, robust = TRUE)\
+fit.lasso.robust $pval.corr \
+pvalues_robust_DMN_VAN_cry=fit.lasso.robust $pval.corr \
+\
+\
+x=model.matrix(composite_crystilized ~ Age + Sex+ Income+MRI_manufacturer+ education+FD+ VAN,whole_final_cohort)[, -1] #Dropping the intercept column)\
+fit.ridge <- ridge.proj(x, y,multiplecorr.method = "bonferroni")\
+fit.ridge.scaled  <- ridge.proj(x, y, betainit = "scaled lasso",multiplecorr.method = "bonferroni")\
+pvalues_FWEc_VAN_cry=fit.ridge.scaled$pval.corr\
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
+\cf0 fit.lasso.robust <- lasso.proj(x, y, robust = TRUE)\
+fit.lasso.robust $pval.corr \
+pvalues_robust_VAN_cry=fit.lasso.robust $pval.corr \
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
+\cf0 \
+x=model.matrix(composite_crystilized ~ Age + Sex+ Income+MRI_manufacturer+ education+FD+ DAN,whole_final_cohort)[, -1] #Dropping the intercept column)\
+fit.ridge <- ridge.proj(x, y,multiplecorr.method = "holm")\
+fit.ridge.scaled  <- ridge.proj(x, y, betainit = "scaled lasso",multiplecorr.method = "bonferroni")\
+pvalues_FWEc_DAN_cry=fit.ridge.scaled$pval.corr\
+fit.lasso.robust <- lasso.proj(x, y, robust = TRUE)\
+fit.lasso.robust $pval.corr \
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
+\cf0 pvalues_robust_DAN_cry=fit.lasso.robust $pval.corr \
+\
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
+\cf0 x=model.matrix(composite_crystilized ~ Age + Sex+ Income+MRI_manufacturer+ education+FD+ VAN_DAN,whole_final_cohort)[, -1] #Dropping the intercept column)\
+fit.ridge <- ridge.proj(x, y,multiplecorr.method = "bonferroni")\
+fit.ridge.scaled  <- ridge.proj(x, y, betainit = "scaled lasso",multiplecorr.method = "bonferroni")\
+pvalues_FWEc_VAN_DAN_cry=fit.ridge.scaled$pval.corr\
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4226\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
+\cf0 fit.lasso.robust <- lasso.proj(x, y, robust = TRUE)\
+fit.lasso.robust $pval.corr \
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
+\cf0 pvalues_robust_VAN_DAN_cry=fit.lasso.robust $pval.corr \
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4226\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
+\cf0 \
+\
+library(hdi)\
+\
+set.seed(18)\
+\
+ y=whole_final_cohort[ ,c("composite_fluid")]\
+\
+\
+x=model.matrix(composite_fluid ~ Age + Sex+ Income+MRI_manufacturer+ education+FD+ DMN,whole_final_cohort)[, -1] #Dropping the intercept column)\
+\
+fit.ridge <- ridge.proj(x, y,multiplecorr.method = "bonferroni")\
+ fit.ridge.scaled  <- ridge.proj(x, y, betainit = "scaled lasso",multiplecorr.method = "bonferroni")\
+pvalues_FWEc_DMN_flu=fit.ridge.scaled$pval.corr\
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
+\cf0 fit.lasso.robust <- lasso.proj(x, y, robust = TRUE)\
+pvalues_robust_DMN_flu=fit.lasso.robust $pval.corr \
+\
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4226\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
+\cf0 \
+x=model.matrix(composite_fluid~ Age + Sex+ Income+MRI_manufacturer+ education+FD+ DMN_DAN,whole_final_cohort)[, -1] #Dropping the intercept column)\
+\
+fit.ridge <- ridge.proj(x, y,multiplecorr.method = "bonferroni")\
+ fit.ridge.scaled  <- ridge.proj(x, y, betainit = "scaled lasso",multiplecorr.method = "bonferroni")\
+pvalues_FWEc_DMN_DAN_flu=fit.ridge.scaled$pval.corr\
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
+\cf0 fit.lasso.robust <- lasso.proj(x, y, robust = TRUE)\
+pvalues_robust_DMN_DAN_flu=fit.lasso.robust $pval.corr \
+\
+\
+\
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4226\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
+\cf0 \
+x=model.matrix(composite_fluid~ Age + Sex+ Income+MRI_manufacturer+ education+FD+ DMN_VAN,whole_final_cohort)[, -1] #Dropping the intercept column)\
+fit.ridge <- ridge.proj(x, y,multiplecorr.method = "bonferroni")\
+ fit.ridge.scaled  <- ridge.proj(x, y, betainit = "scaled lasso",multiplecorr.method = "bonferroni")\
+pvalues_FWEc_DMN_VAN_flu=fit.ridge.scaled$pval.corr\
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
+\cf0 fit.lasso.robust <- lasso.proj(x, y, robust = TRUE)\
+pvalues_robust_DMN_VAN_flu=fit.lasso.robust $pval.corr \
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4226\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
+\cf0 \
+\
+x=model.matrix(composite_fluid ~ Age + Sex+ Income+MRI_manufacturer+ education+FD+ DAN,whole_final_cohort)[, -1] #Dropping the intercept column)\
+fit.ridge <- ridge.proj(x, y,multiplecorr.method = "bonferroni")\
+ fit.ridge.scaled  <- ridge.proj(x, y, betainit = "scaled lasso",multiplecorr.method ="bonferroni")\
+pvalues_FWEc_DAN_flu=fit.ridge.scaled$pval.corr\
+fit.lasso.robust <- lasso.proj(x, y, robust = TRUE)\
+pvalues_robust_DAN_flu=fit.lasso.robust $pval.cor\
+\
+x=model.matrix(composite_fluid ~ Age + Sex+ Income+MRI_manufacturer+ education+FD+ VAN,whole_final_cohort)[, -1] #Dropping the intercept column)\
+fit.ridge <- ridge.proj(x, y,multiplecorr.method = "bonferroni")\
+ fit.ridge.scaled  <- ridge.proj(x, y, betainit = "scaled lasso",multiplecorr.method ="bonferroni")\
+pvalues_FWEc_VAN_flu=fit.ridge.scaled$pval.corr\
+fit.lasso.robust <- lasso.proj(x, y, robust = TRUE)\
+pvalues_robust_VAN_flu=fit.lasso.robust $pval.cor\
+\
+x=model.matrix(composite_fluid~ Age + Sex+ Income+MRI_manufacturer+ education+FD+ VAN_DAN,whole_final_cohort)[, -1] #Dropping the intercept column)\
+\
+ fit.ridge.scaled  <- ridge.proj(x, y, betainit = "scaled lasso",multiplecorr.method = "bonferroni")\
+fit.ridge <- ridge.proj(x, y,multiplecorr.method = "bonferroni")\
+pvalues_FWEc_VAN_DAN_flu=fit.ridge.scaled$pval.corr\
+fit.lasso.robust <- lasso.proj(x, y, robust = TRUE)\
+pvalues_robust_VAN_DAN_flu=fit.lasso.robust $pval.cor\
+\
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
+\cf0 \
+\
+\
+\pard\pardeftab720\partightenfactor0
+\cf0 \
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4226\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
+\cf0 ### gives optimal Laaso ## # \
+\
+mdl_lasso$bestTune\
+\
+ggplot(mdl_lasso) +\
+  labs(title = "Lasso Regression Parameter Tuning", x = "lambda")\
+\
+\
+#### Gives the coefs of thre optimal model ### \
+\
+coef(mdl_lasso$finalModel, mdl_lasso$finalModel$lambdaOpt)\
+\
+\
+##### Make predictions on test data and test model performance #### \
+\
+pred.full <- predict(mdl_lasso,newdata=test)\
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
+\cf0 pred.lasso <- as.vector(predict(mdl_lasso,test , s=mdl_lasso$finalModel$lambdaOpt))\
+\
+Actual_intelligence= test[ ,c(\'93AVGcryst\'94)]\
+\
+\
+cor(Actual_intellicence,pred.lasso)\
+\
+\
+\
+reg1<-lm(pred.lasso ~Actual_intelligence )\
+\
+\
+abline(reg1, col="blue",lwd=5)\
+\
+\
+\
+###### PLOT both accuracy of the models and variale importance FOR the Model DMN_VAN > crystilized iintelligence #### \
+\
+\
+par(mfrow=c(1,2))\
+ \
+plot1=plot(Actual_intelligence,pred.lasso , xlab="Observed crystalized Intelligence" ,\
+         ylab="Predicted crystilized intelligence (LASSO)",font.lab=1,cex.lab=1, cex.sub=1)\
+\
+abline(reg1, col="red",lwd=4)\
+\
+summary(model_gbm)\
+\
+\
+
+\f1\b ############## ##############NOW LASSO in the whole population FWE correction  Holm- Bonferroni ###############################\
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4226\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
+
+\f0\b0 \cf0 \
+\
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
+\cf0 \
+\
+
+\f1\b ########################################### NOW ESTIMATION of beta coef by boostrap ###############
+\f0\b0 ########################################################\
+\
+\
+\
+library(parallel)\
+library(readxl)\
+library(sjPlot)\
+\
+library(boot)\
+library(lmboot)\
+\
+\
+### FOR CRYSTILIZED #### \
+dev.new()\
+Seed=set.seed(32934)\
+\
+par(mfrow=c(2,6))\
+\
+\
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
+\cf0 y=whole_final_cohort[ ,c("composite_crystilized")]\
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
+\cf0 \
+x1=model.matrix(composite_crystilized ~ Age + Sex+ Income+MRI_manufacturer+ education+FD+ DMN,whole_final_cohort)[, -1] #Dropping the intercept column)\
+\
+DMNcrWildObj <- wild.boot(y ~ x1, B=60000, seed=Seed)\
+WildObj$origEstParam\
+mean(DMNcrWildObj$bootEstParam[,12],)\
+\
+fig1=hist(WildObj$bootEstParam[,12],main=expression(paste(" boostraped samples of ",beta,~ "coeficients (linear regression)")),\
+    \
+      xlab= " Betas DMN connectivity", ylab= "Count (in 60000 Boostrap Replications)",col=c("lightblue"),cex.axis = 1.5, cex.lab = 1.2)\
+\
+ A=quantile(WildObj$bootEstParam[,12], probs=c(.025))\
+ B=quantile(WildObj$bootEstParam[,12], probs=c(.975))\
+C=mean(WildObj$bootEstParam[,12],)\
+abline(v = A, col="black", lwd=2, lty=1)\
+abline(v = B, col="blue", lwd=2, lty=1)\
+abline(v = C, col="red", lwd=3, lty=2)\
+\
+rug(WildObj$bootEstParam[,12], ticksize = 0.03, side = 1, lwd = 0.1, col = "purple",\
+    quiet = getOption("warn") < 0)\
+\
+\
+\
+\
+x1=model.matrix(composite_crystilized ~ Age + Sex+ Income+MRI_manufacturer+ education+FD+DMN_DAN,whole_final_cohort)[, -1] #Dropping the intercept column)\
+WildObj <- wild.boot(y ~ x1, B=60000, seed=Seed)\
+WildObj$origEstParam\
+\
+WildObj <- wild.boot(y ~ x1, B=60000, seed=Seed)\
+WildObj$origEstParam\
+\
+\
+\
+fig2=hist(WildObj$bootEstParam[,12],main=expression(paste(" boostraped samples of ",beta,~ "coeficients (linear regression)")),\
+    \
+      xlab= " Betas DMN DAN connectivity", ylab= "Count (in 60000 Boostrap Replications)",col=c("lightblue"),cex.axis = 1.5, cex.lab = 1.2)\
+\
+ A=quantile(WildObj$bootEstParam[,12], probs=c(.025))\
+ B=quantile(WildObj$bootEstParam[,12], probs=c(.975))\
+C=mean(WildObj$bootEstParam[,12],)\
+abline(v = A, col="black", lwd=2, lty=1)\
+abline(v = B, col="blue", lwd=2, lty=1)\
+abline(v = C, col="red", lwd=3, lty=2)\
+\
+rug(WildObj$bootEstParam[,12], ticksize = 0.03, side = 1, lwd = 0.1, col = "purple",\
+    quiet = getOption("warn") < 0)\
+\
+\
+x1=model.matrix(composite_crystilized ~ Age + Sex+ Income+MRI_manufacturer+ education+FD+DMN_VAN,whole_final_cohort)[, -1] #Dropping the intercept column)\
+WildObj <- wild.boot(y ~ x1, B=60000, seed=Seed)\
+WildObj$origEstParam\
+\
+WildObj <- wild.boot(y ~ x1, B=60000, seed=Seed)\
+WildObj$origEstParam\
+\
+fig3=hist(WildObj$bootEstParam[,12],main=expression(paste(" boostraped samples of ",beta,~ "coeficients (linear regression)")),\
+    \
+      xlab= " Betas DMN VAN connectivity", ylab= "Count (in 60000 Boostrap Replications)",col=c("lightblue"),cex.axis = 1.5, cex.lab = 1.2)\
+\
+ A=quantile(WildObj$bootEstParam[,12], probs=c(.025))\
+ B=quantile(WildObj$bootEstParam[,12], probs=c(.975))\
+C=mean(WildObj$bootEstParam[,12],)\
+abline(v = A, col="black", lwd=2, lty=1)\
+abline(v = B, col="blue", lwd=2, lty=1)\
+abline(v = C, col="red", lwd=3, lty=2)\
+\
+rug(WildObj$bootEstParam[,12], ticksize = 0.03, side = 1, lwd = 0.1, col = "purple",\
+    quiet = getOption("warn") < 0)\
+\
+\
+\
+\
+x1=model.matrix(composite_crystilized ~ Age + Sex+ Income+MRI_manufacturer+ education+FD+DAN,whole_final_cohort)[, -1] #Dropping the intercept column)\
+\
+WildObj <- wild.boot(y ~ x1, B=60000, seed=Seed)\
+\
+WildObj$origEstParam\
+\
+fig4=hist(WildObj$bootEstParam[,12],main=expression(paste(" boostraped samples of ",beta,~ "coeficients (linear regression)")),\
+    \
+      xlab= " Betas DAN connectivity", ylab= "Count (in 60000 Boostrap Replications)",col=c("lightblue"),cex.axis = 1.5, cex.lab = 1.2)\
+\
+ A=quantile(WildObj$bootEstParam[,12], probs=c(.025))\
+ B=quantile(WildObj$bootEstParam[,12], probs=c(.975))\
+C=mean(WildObj$bootEstParam[,12],)\
+abline(v = A, col="black", lwd=2, lty=1)\
+abline(v = B, col="blue", lwd=2, lty=1)\
+abline(v = C, col="red", lwd=3, lty=2)\
+\
+rug(WildObj$bootEstParam[,12], ticksize = 0.03, side = 1, lwd = 0.1, col = "purple",\
+    quiet = getOption("warn") < 0)\
+\
+\
+\
+x1=model.matrix(composite_crystilized ~ Age + Sex+ Income+MRI_manufacturer+ education+FD+VAN,whole_final_cohort)[, -1] #Dropping the intercept column)\
+\
+WildObj <- wild.boot(y ~ x1, B=60000, seed=Seed)\
+\
+WildObj$origEstParam\
+\
+fig5=hist(WildObj$bootEstParam[,12],main=expression(paste(" boostraped samples of ",beta,~ "coeficients (linear regression)")),\
+    \
+      xlab= " Betas VAN connectivity", ylab= "Count (in 60000 Boostrap Replications)",col=c("lightblue"),cex.axis = 1.5, cex.lab = 1.2)\
+\
+ A=quantile(WildObj$bootEstParam[,12], probs=c(.025))\
+ B=quantile(WildObj$bootEstParam[,12], probs=c(.975))\
+C=mean(WildObj$bootEstParam[,12],)\
+abline(v = A, col="black", lwd=2, lty=1)\
+abline(v = B, col="blue", lwd=2, lty=1)\
+abline(v = C, col="red", lwd=3, lty=2)\
+\
+rug(WildObj$bootEstParam[,12], ticksize = 0.03, side = 1, lwd = 0.1, col = "purple",\
+    quiet = getOption("warn") < 0)\
+\
+\
+x1=model.matrix(composite_crystilized ~ Age + Sex+ Income+MRI_manufacturer+ education+FD+VAN_DAN,whole_final_cohort)[, -1] #Dropping the intercept column)\
+\
+WildObj <- wild.boot(y ~ x1, B=60000, seed=Seed)\
+\
+WildObj$origEstParam\
+\
+fig6=hist(WildObj$bootEstParam[,12],main=expression(paste(" boostraped samples of ",beta,~ "coeficients (linear regression)")),\
+    \
+      xlab= " Betas VAN DAN connectivity", ylab= "Count (in 60000 Boostrap Replications)",col=c("lightblue"),cex.axis = 1.5, cex.lab = 1.2)\
+\
+ A=quantile(WildObj$bootEstParam[,12], probs=c(.025))\
+ B=quantile(WildObj$bootEstParam[,12], probs=c(.975))\
+C=mean(WildObj$bootEstParam[,12],)\
+abline(v = A, col="black", lwd=2, lty=1)\
+abline(v = B, col="blue", lwd=2, lty=1)\
+abline(v = C, col="red", lwd=3, lty=2)\
+\
+rug(WildObj$bootEstParam[,12], ticksize = 0.03, side = 1, lwd = 0.1, col = "purple",\
+    quiet = getOption("warn") < 0)\
+
+\f1\b \
+
+\f0\b0 \
+\
+\
+y=whole_final_cohort[ ,c("composite_fluid\'94)]\
+\
+x1=model.matrix(composite_fluid ~ Age + Sex+ Income+MRI_manufacturer+ education+FD+ DMN,whole_final_cohort)[, -1] #Dropping the intercept column)\
+\
+WildObj <- wild.boot(y ~ x1, B=60000, seed=Seed)\
+WildObj$origEstParam\
+\
+\
+fig7=hist(WildObj$bootEstParam[,12],main=expression(paste(" boostraped samples of ",beta,~ "coeficients (linear regression)")),\
+    \
+      xlab= " Betas DMN connectivity", ylab= "Count (in 60000 Boostrap Replications)",col=c("lightblue"),cex.axis = 1.5, cex.lab = 1.2)\
+\
+ A=quantile(WildObj$bootEstParam[,12], probs=c(.025))\
+ B=quantile(WildObj$bootEstParam[,12], probs=c(.975))\
+C=mean(WildObj$bootEstParam[,12],)\
+abline(v = A, col="black", lwd=2, lty=1)\
+abline(v = B, col="blue", lwd=2, lty=1)\
+abline(v = C, col="red", lwd=3, lty=2)\
+\
+rug(WildObj$bootEstParam[,12], ticksize = 0.03, side = 1, lwd = 0.1, col = "purple",\
+    quiet = getOption("warn") < 0)\
+\
+\
+\
+x1=model.matrix(composite_fluid ~ Age + Sex+ Income+MRI_manufacturer+ education+FD+DMN_DAN,whole_final_cohort)[, -1] #Dropping the intercept column)\
+WildObj <- wild.boot(y ~ x1, B=60000, seed=Seed)\
+WildObj$origEstParam\
+\
+WildObj <- wild.boot(y ~ x1, B=60000, seed=Seed)\
+WildObj$origEstParam\
+\
+\
+fig8=hist(WildObj$bootEstParam[,12],main=expression(paste(" boostraped samples of ",beta,~ "coeficients (linear regression)")),\
+    \
+      xlab= " Betas DMN DAN connectivity", ylab= "Count (in 60000 Boostrap Replications)",col=c("lightblue"),cex.axis = 1.5, cex.lab = 1.2)\
+\
+ A=quantile(WildObj$bootEstParam[,12], probs=c(.025))\
+ B=quantile(WildObj$bootEstParam[,12], probs=c(.975))\
+C=mean(WildObj$bootEstParam[,12],)\
+abline(v = A, col="black", lwd=2, lty=1)\
+abline(v = B, col="blue", lwd=2, lty=1)\
+abline(v = C, col="red", lwd=3, lty=2)\
+\
+rug(WildObj$bootEstParam[,12], ticksize = 0.03, side = 1, lwd = 0.1, col = "purple",\
+    quiet = getOption("warn") < 0)\
+\
+\
+x1=model.matrix(composite_fluid ~ Age + Sex+ Income+MRI_manufacturer+ education+FD+DMN_VAN,whole_final_cohort)[, -1] #Dropping the intercept column)\
+WildObj <- wild.boot(y ~ x1, B=60000, seed=Seed)\
+WildObj$origEstParam\
+\
+WildObj <- wild.boot(y ~ x1, B=60000, seed=Seed)\
+WildObj$origEstParam\
+\
+fig9=hist(WildObj$bootEstParam[,12],main=expression(paste(" boostraped samples of ",beta,~ "coeficients (linear regression)")),\
+    \
+      xlab= " Betas DMN VAN connectivity", ylab= "Count (in 60000 Boostrap Replications)",col=c("lightblue"),cex.axis = 1.5, cex.lab = 1.2)\
+\
+ A=quantile(WildObj$bootEstParam[,12], probs=c(.025))\
+ B=quantile(WildObj$bootEstParam[,12], probs=c(.975))\
+C=mean(WildObj$bootEstParam[,12],)\
+abline(v = A, col="black", lwd=2, lty=1)\
+abline(v = B, col="blue", lwd=2, lty=1)\
+abline(v = C, col="red", lwd=3, lty=2)\
+\
+rug(WildObj$bootEstParam[,12], ticksize = 0.03, side = 1, lwd = 0.1, col = "purple",\
+    quiet = getOption("warn") < 0)\
+\
+\
+\
+\
+x1=model.matrix(composite_fluid ~ Age + Sex+ Income+MRI_manufacturer+ education+FD+DAN,whole_final_cohort)[, -1] #Dropping the intercept column)\
+\
+WildObj <- wild.boot(y ~ x1, B=60000, seed=Seed)\
+\
+WildObj$origEstParam\
+\
+fig10=hist(WildObj$bootEstParam[,12],main=expression(paste(" boostraped samples of ",beta,~ "coeficients (linear regression)")),\
+    \
+      xlab= " Betas DAN connectivity", ylab= "Count (in 60000 Boostrap Replications)",col=c("lightblue"),cex.axis = 1.5, cex.lab = 1.2)\
+\
+ A=quantile(WildObj$bootEstParam[,12], probs=c(.025))\
+ B=quantile(WildObj$bootEstParam[,12], probs=c(.975))\
+C=mean(WildObj$bootEstParam[,12],)\
+abline(v = A, col="black", lwd=2, lty=1)\
+abline(v = B, col="blue", lwd=2, lty=1)\
+abline(v = C, col="red", lwd=3, lty=2)\
+\
+rug(WildObj$bootEstParam[,12], ticksize = 0.03, side = 1, lwd = 0.1, col = "purple",\
+    quiet = getOption("warn") < 0)\
+\
+\
+\
+\
+x1=model.matrix(composite_fluid ~ Age + Sex+ Income+MRI_manufacturer+ education+FD+VAN,whole_final_cohort)[, -1] #Dropping the intercept column)\
+\
+WildObj <- wild.boot(y ~ x1, B=60000, seed=Seed)\
+\
+WildObj$origEstParam\
+\
+fig11=hist(WildObj$bootEstParam[,12],main=expression(paste(" boostraped samples of ",beta,~ "coeficients (linear regression)")),\
+    \
+      xlab= " Betas VAN connectivity", ylab= "Count (in 60000 Boostrap Replications)",col=c("lightblue"),cex.axis = 1.5, cex.lab = 1.2)\
+\
+ A=quantile(WildObj$bootEstParam[,12], probs=c(.025))\
+ B=quantile(WildObj$bootEstParam[,12], probs=c(.975))\
+C=mean(WildObj$bootEstParam[,12],)\
+abline(v = A, col="black", lwd=2, lty=1)\
+abline(v = B, col="blue", lwd=2, lty=1)\
+abline(v = C, col="red", lwd=3, lty=2)\
+\
+rug(WildObj$bootEstParam[,12], ticksize = 0.03, side = 1, lwd = 0.1, col = "purple",\
+    quiet = getOption("warn") < 0)\
+\
+\
+x1=model.matrix(composite_fluid ~ Age + Sex+ Income+MRI_manufacturer+ education+FD+VAN_DAN,whole_final_cohort)[, -1] #Dropping the intercept column)\
+\
+fig12=hist(WildObj$bootEstParam[,12],main=expression(paste(" boostraped samples of ",beta,~ "coeficients (linear regression)")),\
+    \
+      xlab= " Betas VAN  DAN connectivity", ylab= "Count (in 60000 Boostrap Replications)",col=c("lightblue"),cex.axis = 1.5, cex.lab = 1.2)\
+\
+ A=quantile(WildObj$bootEstParam[,12], probs=c(.025))\
+ B=quantile(WildObj$bootEstParam[,12], probs=c(.975))\
+C=mean(WildObj$bootEstParam[,12],)\
+abline(v = A, col="black", lwd=2, lty=1)\
+abline(v = B, col="blue", lwd=2, lty=1)\
+abline(v = C, col="red", lwd=3, lty=2)\
+\
+rug(WildObj$bootEstParam[,12], ticksize = 0.03, side = 1, lwd = 0.1, col = "purple",\
+    quiet = getOption("warn") < 0)\
+\
+\
+\
+\
+\
+
+\f1\b \
+################### Now the  kfold linear models cross-validated ###########################
+\f0\b0 \
+\
+\
+\
+\
+train_control<-trainControl(method="repeatedcv", number=5, repeats=10)\
+Model1<- train(composite_crystilized ~ Age + Sex+ Income+MRI_manufacturer+ education+FD+DMN, data =train_data, selectionFunction = "best",method = "lm", trControl = train_control, preProcess = c("center", "scale"),savePredictions= "final")\
+fold_dataDMNcr <- lapply(Model1$control$index, function(index) train_data[index,]) %>% \
+    bind_rows(.id = "Fold")\
+\
+Model2<- train(composite_crystilized ~ Age + Sex+ Income+MRI_manufacturer+ education+FD+DMN_DAN, data =train_data, selectionFunction = "best",method = "lm", trControl = train_control, preProcess = c("center", "scale"),savePredictions= "final")\
+\
+fold_dataDMN_DANcr <- lapply(Model2$control$index, function(index) train_data[index,]) %>% \
+    bind_rows(.id = "Fold")\
+Model3<- train(composite_crystilized ~ Age + Sex+ Income+MRI_manufacturer+ education+FD+DMN_VAN, data =train_data, selectionFunction = "best",method = "lm", trControl = train_control, preProcess = c("center", "scale"),savePredictions= "final")\
+\
+fold_dataDMN_VANcr <- lapply(Model3$control$index, function(index) train_data[index,]) %>% \
+    bind_rows(.id = "Fold")\
+Model4<- train(composite_crystilized ~ Age + Sex+ Income+MRI_manufacturer+ education+FD+DAN, data =train_data, selectionFunction = "best",method = "lm", trControl = train_control, preProcess = c("center", "scale"),savePredictions= "final")\
+\
+fold_dataDANcr <- lapply(Model4$control$index, function(index) train_data[index,]) %>% \
+    bind_rows(.id = "Fold")\
+\
+Model5<- train(composite_crystilized ~ Age + Sex+ Income+MRI_manufacturer+ education+FD+VAN, data =train_data, selectionFunction = "best",method = "lm", trControl = train_control, preProcess = c("center", "scale"),savePredictions= "final")\
+\
+fold_dataVANcr <- lapply(Model5$control$index, function(index) train_data[index,]) %>% \
+    bind_rows(.id = "Fold")\
+Model6<- train(composite_crystilized ~ Age + Sex+ Income+MRI_manufacturer+ education+FD+VAN_DAN, data =train_data, selectionFunction = "best",method = "lm", trControl = train_control, preProcess = c("center", "scale"),savePredictions= "final")\
+\
+fold_dataDAN_VANcr <- lapply(Model6$control$index, function(index) train_data[index,]) %>% \
+    bind_rows(.id = "Fold")\
+Model7<- train(composite_fluid ~ Age + Sex+ Income+MRI_manufacturer+ education+FD+DMN,data =train_data, selectionFunction = "best",method = "lm", trControl = train_control, preProcess = c("center", "scale"),savePredictions= "final")\
+\
+fold_dataDMNf <- lapply(Model7$control$index, function(index) train_data[index,]) %>% \
+    bind_rows(.id = "Fold")\
+Model8<- train(composite_fluid ~ Age + Sex+ Income+MRI_manufacturer+ education+FD+DMN_DAN,data =train_data, selectionFunction = "best",method = "lm", trControl = train_control, preProcess = c("center", "scale"),savePredictions= "final")\
+\
+fold_dataDMN_DANf <- lapply(Model8$control$index, function(index) train_data[index,]) %>% \
+    bind_rows(.id = "Fold")\
+Model9<- train(composite_fluid ~ Age + Sex+ Income+MRI_manufacturer+ education+FD+DMN_VAN,data =train_data, selectionFunction = "best",method = "lm", trControl = train_control, preProcess = c("center", "scale"),savePredictions= "final")\
+\
+fold_dataDMN_VANf <- lapply(Model9$control$index, function(index) train_data[index,]) %>% \
+    bind_rows(.id = "Fold")\
+Model10<- train(composite_fluid ~ Age + Sex+ Income+MRI_manufacturer+ education+FD+DAN,data =train_data, selectionFunction = "best",method = "lm", trControl = train_control, preProcess = c("center", "scale"),savePredictions= "final")\
+\
+fold_dataDANf <- lapply(Model10$control$index, function(index) train_data[index,]) %>% \
+    bind_rows(.id = "Fold")\
+Model11<- train(composite_fluid ~ Age + Sex+ Income+MRI_manufacturer+ education+FD+VAN,data =train_data, selectionFunction = "best",method = "lm", trControl = train_control, preProcess = c("center", "scale"),savePredictions= "final")\
+\
+fold_dataVANf <- lapply(Model11$control$index, function(index) train_data[index,]) %>% \
+    bind_rows(.id = "Fold")\
+Model12<- train(composite_fluid ~ Age + Sex+ Income+MRI_manufacturer+ education+FD+VAN_DAN,data =train_data, selectionFunction = "best",method = "lm", trControl = train_control, preProcess = c("center", "scale"),savePredictions= "final")\
+\
+fold_dataDAN_VANf <- lapply(Model12$control$index, function(index) train_data[index,]) %>% \
+    bind_rows(.id = "Fold")\
+plot1=ggplot(fold_dataDMNcr, aes(DMN,composite_crystilized,col = Fold,fill=Fold),size=0.5, alpha=0.1) + \
+     geom_point(shape = 21, fill = "red3",\
+               color = "red2", size = 3) +  theme_classic() + labs(x =  "DMN", y = "score crystallized cogniton") + theme(axis.title = element_text(size = 15))+theme(axis.line = element_line(linewidth = 1, colour = "black"))+ theme(axis.text.y = element_text(size = 15))+ theme(axis.text.x = element_text(size = 15))+\
+      geom_smooth(method = "lm", formula="y~x", alpha=0.01,show.legend = FALSE)  + scale_fill_viridis_d()\
+plot2=ggplot(fold_dataDMN_DANcr, aes(DMN_DAN,composite_crystilized,col = Fold,fill=Fold),size=0.5, alpha=0.1) + \
+      geom_point(shape = 21, fill = "green",\
+               color = "green2", size = 3) +  theme_classic() +labs(x =  "DMN DAN", y = "score crystallized cogniton")+theme(axis.line = element_line(linewidth = 1, colour = "black"))+ theme(axis.title = element_text(size = 15))+ theme(axis.text.y = element_text(size = 15))+ theme(axis.text.x = element_text(size = 15))+\
+      geom_smooth(method = "lm", formula="y~x", alpha=0.01,show.legend = FALSE)  + scale_fill_viridis_d()\
+plot3=ggplot(fold_dataDMN_VANcr, aes(DMN_VAN,composite_crystilized,col = Fold,fill=Fold),size=0.5, alpha=0.1) + \
+      geom_point(shape = 21, fill = "green4",\
+               color = "green3", size = 3) +  theme_classic() +labs(x =  "DMN VAN", y = "score crystallized cogniton")+ theme(axis.title = element_text(size = 15))+theme(axis.line = element_line(linewidth = 1, colour = "black"))+ theme(axis.text.y = element_text(size = 15))+ theme(axis.text.x = element_text(size = 15))+\
+      geom_smooth(method = "lm", formula="y~x", alpha=0.01,show.legend = FALSE)  + scale_fill_viridis_d()\
+plot4=ggplot(fold_dataVAN_DANcr, aes(VAN_DAN,composite_crystilized,col = Fold,fill=Fold),size=0.5, alpha=0.1) + \
+      geom_point(shape = 21, fill = "yellow2",\
+               color = "yellow4", size = 3) +  theme_classic() +labs(x =  "VAN DAN", y = "score crystallized cogniton")+theme(axis.line = element_line(linewidth = 1, colour = "black"))+ theme(axis.title = element_text(size = 15))+ theme(axis.text.y = element_text(size = 15))+ theme(axis.text.x = element_text(size = 15))+\
+      geom_smooth(method = "lm", formula="y~x", alpha=0.01,show.legend = FALSE)  + scale_fill_viridis_d()\
+\
+plot5=ggplot(fold_dataVANcr, aes(VAN,composite_crystilized,col = Fold,fill=Fold),size=0.5, alpha=0.1) + \
+      geom_point(shape = 21, fill = "purple",\
+               color = "purple4", size = 3) +  theme_classic() +labs(x =  "VAN", y = "score crystallized cogniton")+theme(axis.line = element_line(linewidth = 1, colour = "black"))+ theme(axis.title = element_text(size = 15))+ theme(axis.text.y = element_text(size = 15))+ theme(axis.text.x = element_text(size = 15))+\
+      geom_smooth(method = "lm", formula="y~x", alpha=0.01,show.legend = FALSE)  + scale_fill_viridis_d()\
+\
+plot6=ggplot(fold_dataDANcr, aes(DAN,composite_crystilized,col = Fold,fill=Fold),size=0.5, alpha=0.1) + \
+      geom_point(shape = 21, fill = "blue",\
+               color = "blue4", size = 3) +  theme_classic() +labs(x =  "DAN", y = "score crystallized cogniton")+theme(axis.line = element_line(linewidth = 1, colour = "black"))+ theme(axis.title = element_text(size = 15))+ theme(axis.text.y = element_text(size = 15))+ theme(axis.text.x = element_text(size = 15))+\
+      geom_smooth(method = "lm", formula="y~x", alpha=0.01,show.legend = FALSE)  + scale_fill_viridis_d()\
+plot7=ggplot(fold_dataDMNf, aes(DMN,composite_fluid,col = Fold,fill=Fold),size=0.5, alpha=0.1) + \
+     geom_point(shape = 21, fill = "red3",\
+               color = "red2", size = 3) +  theme_classic() + labs(x =  "DMN", y = "score fluid cogniton") + theme(axis.title = element_text(size = 15))+theme(axis.line = element_line(linewidth = 1, colour = "black"))+ theme(axis.text.y = element_text(size = 15))+ theme(axis.text.x = element_text(size = 15))+\
+      geom_smooth(method = "lm", formula="y~x", alpha=0.01,show.legend = FALSE)  + scale_fill_viridis_d()\
+\
+plot8=ggplot(fold_dataDMN_DANf, aes(DMN_DAN,composite_fluid,col = Fold,fill=Fold),size=0.5, alpha=0.1) + \
+      geom_point(shape = 21, fill = "green",\
+               color = "green2", size = 3) +  theme_classic() +labs(x =  "DMN DAN", y = "score fluid cogniton")+theme(axis.line = element_line(linewidth = 1, colour = "black"))+ theme(axis.title = element_text(size = 15))+ theme(axis.text.y = element_text(size = 15))+ theme(axis.text.x = element_text(size = 15))+\
+      geom_smooth(method = "lm", formula="y~x", alpha=0.01,show.legend = FALSE)  + scale_fill_viridis_d()\
+plot9=ggplot(fold_dataDMN_VANf, aes(DMN_VAN,composite_fluid,col = Fold,fill=Fold),size=0.5, alpha=0.1) + \
+      geom_point(shape = 21, fill = "green4",\
+               color = "green3", size = 3) +  theme_classic() +labs(x =  "DMN VAN", y = "score fluid cogniton")+ theme(axis.title = element_text(size = 15))+theme(axis.line = element_line(linewidth = 1, colour = "black"))+ theme(axis.text.y = element_text(size = 15))+ theme(axis.text.x = element_text(size = 15))+\
+      geom_smooth(method = "lm", formula="y~x", alpha=0.01,show.legend = FALSE)  + scale_fill_viridis_d()\
+plot10=ggplot(fold_dataVAN_DANf, aes(VAN_DAN,composite_fluid,col = Fold,fill=Fold),size=0.5, alpha=0.1) + \
+      geom_point(shape = 21, fill = "yellow2",\
+               color = "yellow4", size = 3) +  theme_classic() +labs(x =  "VAN DAN", y = "score fluid cogniton")+theme(axis.line = element_line(linewidth = 1, colour = "black"))+ theme(axis.title = element_text(size = 15))+ theme(axis.text.y = element_text(size = 15))+ theme(axis.text.x = element_text(size = 15))+\
+      geom_smooth(method = "lm", formula="y~x", alpha=0.01,show.legend = FALSE)  + scale_fill_viridis_d()\
+\
+plot11=ggplot(fold_dataVANf, aes(VAN,composite_fluid,col = Fold,fill=Fold),size=0.5, alpha=0.1) + \
+      geom_point(shape = 21, fill = "purple",\
+               color = "purple4", size = 3) +  theme_classic() +labs(x =  "VAN", y = "score fluid cogniton")+theme(axis.line = element_line(linewidth = 1, colour = "black"))+ theme(axis.title = element_text(size = 15))+ theme(axis.text.y = element_text(size = 15))+ theme(axis.text.x = element_text(size = 15))+\
+      geom_smooth(method = "lm", formula="y~x", alpha=0.01,show.legend = FALSE)  + scale_fill_viridis_d()\
+\
+plot12=ggplot(fold_dataDANf, aes(DAN,composite_fluid,col = Fold,fill=Fold),size=0.5, alpha=0.1) + \
+      geom_point(shape = 21, fill = "blue",\
+               color = "blue4", size = 3) +  theme_classic() +labs(x =  "DAN", y = "score fluid cogniton")+theme(axis.line = element_line(linewidth = 1, colour = "black"))+ theme(axis.title = element_text(size = 15))+ theme(axis.text.y = element_text(size = 15))+ theme(axis.text.x = element_text(size = 15))+\
+      geom_smooth(method = "lm", formula="y~x", alpha=0.01,show.legend = FALSE)  + scale_fill_viridis_d()\
+\
+ggarrange(plot1,plot2,plot3,plot4,plot5,plot6,plot7,plot8,plot9,plot10,plot11,plot12, ncol = 6, nrow = 2)\
+\
+\
+\
+}
