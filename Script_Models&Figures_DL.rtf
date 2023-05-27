@@ -33,7 +33,9 @@ setwd(dir = "/Users/diegolombardo/Desktop/ABCD_project")\
 \
 #### Plot correlation within network connectivity at every network VS between network connectivitty DMN DAN VAN ######## \
 \
+install.packages("yarr")\
 \
+library(yarr)\
 \
 boxplot(whole_final_cohort$DMN,whole_final_cohort$DMN_DAN,whole_final_cohort$DMN_VAN,whole_final_cohort$VAN_DAN,whole_final_cohort$VAN,whole_final_cohort$DAN, col=c("red","green4","yellow","purple4","blue4"), notch = TRUE,lwd=3,cex.axis=2)\
 \
@@ -49,19 +51,146 @@ plot3D_between=scatter3D(whole_final_cohort$DMN_DAN,whole_final_cohort$VAN_DAN,w
                       facets=T, border="black")\
 \
 \
-plot(x = my_data$DMN,\
-        y = my_data$DMN_VAN,\
-        xlab = \'93 Within Network connectivity DMN\'94,\
-        ylab = " Between Network Connectivity\'94,xlim = c(0, 0.6), \
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
+
+\f1\b\fs28 \cf0 #########  New Figure 2  with 2D scatter plots ###############
+\f0\b0\fs24 \
+
+\f1\b \
+dev.new()\
+\
+par(mfrow=c(2,3))\
+\
+plot1=plot(x = whole_final_cohort$DMN,\
+        y = whole_final_cohort$DMN_VAN,\
+        xlab = " within DMN connectivity",\
+        ylab =  "between network connectivity DMN ",xlim = c(0, 0.6), \
        ylim = c(-0.4, 0.3),\
         main = "", \
         pch = 16, \
-       col = transparent("blue4", .8),cex.lab = 2.5,cex.axis = 2.5)\
+       col = transparent("green4", .8),cex.lab = 1.5,cex.axis = 2)\
+ points(whole_final_cohort$DMN,whole_final_cohort$DMN_DAN, pch=16,col = transparent("green", .8))\
+ abline(lm(whole_final_cohort$DMN_DAN ~ whole_final_cohort$DMN), col = "green", lwd = 3,lty=2)\
 \
-points(my_data$DMN,my_data$DMN_DAN, pch=16,col = transparent("red4", .8))\
-points(my_data$DAN,my_data$DMN_DAN, pch=16,col = transparent("bisque2", .85))\
+ abline(lm(whole_final_cohort$DMN_VAN ~ whole_final_cohort$DMN), col = "green4", lwd = 3,lty=2)\
+plot2=plot(x = whole_final_cohort$DAN,\
+        y = whole_final_cohort$DMN_DAN,\
+        xlab = " within DAN connectivity",\
+        ylab = " between network connectivity DAN ",xlim = c(0, 0.6), \
+       ylim = c(-0.4, 0.3),\
+        main = "", \
+        pch = 16, \
+       col = transparent("red4", .8),cex.lab = 1.5,cex.axis = 2)\
+ points(whole_final_cohort$DAN,whole_final_cohort$VAN_DAN, pch=16,col = transparent("green4", .8))\
+ abline(lm(whole_final_cohort$DMN_DAN ~ whole_final_cohort$DAN), col = "red4", lwd = 3,lty=2)\
+\
+ abline(lm(whole_final_cohort$VAN_DAN ~ whole_final_cohort$DAN), col = "green4", lwd = 3,lty=2)\
+plot3=plot(x = whole_final_cohort$VAN,\
+        y = whole_final_cohort$DMN_VAN,\
+        xlab = " within VAN connectivity ",\
+        ylab = "between network connectivity VAN",xlim = c(0, 0.6), \
+       ylim = c(-0.4, 0.3),\
+        main = "", \
+        pch = 16, \
+       col = transparent("red4", .8),cex.lab = 1.5,cex.axis = 2)\
+ points(whole_final_cohort$VAN,whole_final_cohort$VAN_DAN, pch=16,col = transparent("green", .8))\
+ abline(lm(whole_final_cohort$VAN_DAN ~ whole_final_cohort$VAN), col = "green", lwd = 3,lty=2)\
+\
+ abline(lm(whole_final_cohort$DMN_VAN ~ whole_final_cohort$VAN), col = "red4", lwd = 3,lty=2)\
+\
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
+
+\f0\b0 \cf0 \
 \
 \
+\
+################ The data is on the Matrix A  #####################\
+\
+\
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
+
+\f1\b \cf0 A=cbind(bootVAN_DAN$bootsamples,boot_DMN_DAN$bootsamples,bootDMN_VAN$bootsamples)\
+\
+A=as.data.frame(A)
+\f0\b0 \
+\
+\
+Because of a mystery is need to ran in parts  \
+\
+## Part 1 ## \
+\
+
+\f1\b hist(A$V1,main=expression(paste("bootstrapped Person r differences")),\
+      xlab= " Person r differences DMN with DAN and VAN ", ylab= "Count (in 4000 Bootstrap Replications)",col=c("lightblue"),cex.axis = 1.5, cex.lab = 1.2)\
+\
+##Part 2 ##\
+\
+B=quantile(A$V1, probs=c(.025))\
+C=quantile(A$V1, probs=c(.975))\
+D=mean(A$V1,)\
+\
+## Part 3 ## \
+\
+abline(v = B, col="black", lwd=2, lty=1)\
+abline(v = C, col="blue", lwd=2, lty=1)\
+abline(v = D, col="red", lwd=3, lty=2)\
+\
+## Part4 ##\
+\
+rug(A$V1, ticksize = 0.03, side = 1, lwd = 0.1, col = "purple",\
+    quiet = getOption("warn") < 0)\
+hist(A$V3,main=expression(paste("bootstrapped Person r coefficients")),xlab= " Person r differences DAN  with DMN and VAN", ylab= "Count (in 4000 Bootstrap Replications)",col=c("lightblue"),cex.axis = 1.5, cex.lab = 1.2)\
+\
+B=quantile(A$V3, probs=c(.025))\
+C=quantile(A$V3, probs=c(.975))\
+D=mean(A$V3,)\
+\
+abline(v = B, col="black", lwd=2, lty=1)\
+abline(v = C, col="blue", lwd=2, lty=1)\
+abline(v = D, col="red", lwd=3, lty=2)\
+\
+ rug(A$V3, ticksize = 0.03, side = 1, lwd = 0.1, col = "purple",\
+     quiet = getOption("warn") < 0)\
+hist(A$V2,main=expression(paste(" boostraped Persons coeficients")),xlab= " Person r differences VAN  with DMN and DAN", ylab= "Count (in 4000 Boostrap Replications)",col=c("lightblue"),cex.axis = 1.5, cex.lab = 1.2)\
+\
+ B=quantile(A$V2, probs=c(.025))\
+ C=quantile(A$V2, probs=c(.975))\
+D=mean(A$V2,)\
+## Part 3 ## \
+\
+abline(v = B, col="black", lwd=2, lty=1)\
+abline(v = C, col="blue", lwd=2, lty=1)\
+abline(v = D, col="red", lwd=3, lty=2)\
+\
+## Part4 ##\
+\
+rug(A$V2, ticksize = 0.03, side = 1, lwd = 0.1, col = "purple",\
+    quiet = getOption("warn") < 0)\
+\
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
+
+\f0\b0 \cf0 \
+\
+\
+fig3=hist(A$V3,main=expression(paste(" boostraped Persons r coeficients")),xlab= " Persons r", ylab= "Count (in 4000 Boostrap Replications)",col=c("lightblue"),cex.axis = 1.5, cex.lab = 1.2)\
+\
+B=quantile(A$V3, probs=c(.025))\
+C=quantile(A$V3, probs=c(.975))\
+D=mean(A$V3,)\
+\
+abline(v = B, col="black", lwd=2, lty=1)\
+abline(v = C, col="blue", lwd=2, lty=1)\
+abline(v = D, col="red", lwd=3, lty=2)\
+\
+ rug(A$V3, ticksize = 0.03, side = 1, lwd = 0.1, col = "purple",\
+     quiet = getOption("warn") < 0)\
+\
+\
+\
+\
+\
+\
+__________________________________________________________________________________________\
 \
 \
 abline(lm(my_data$DMN_FPN ~ my_data$DMN), col = "bisque4", lwd = 3,lty=2)\
@@ -106,6 +235,13 @@ whole_final_cohort$DAN,\
 A=cbind(bootVAN_DAN$bootsamples,boot_DMN_DAN$bootsamples,bootDMN_VAN$bootsamples)\
 \
 A=data.frame(A)\
+\
+\
+\
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
+
+\f1\b \cf0 ####### THIS IS THE HISTOGRAM FOR THE BOOSTRAPED CORRELATIONS ######
+\f0\b0 \
 \
 \
 g1=ggplot(A, aes(x = X1)) + theme_bw()+  xlab(" boostraped corr DMN with VAN & DAN\'94 )+theme(axis.text = element_text(size = 14)) +theme(axis.title.x = element_text(size = 14))+theme(axis.title.y = element_text(size = 14))+\
@@ -552,9 +688,8 @@ p_VAN_C<-predict(mdl,newdata=test_data)\
 ##### Person r as a indicator of accuracy ####  \
 \
 r_VAN_C= cor (p_VAN_C,observed_C)\
-\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
 
-\f1\b \cf0 \
+\f1\b \
 \
 \
 \pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
