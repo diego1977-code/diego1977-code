@@ -1,0 +1,298 @@
+{\rtf1\ansi\ansicpg1252\cocoartf2707
+\cocoatextscaling0\cocoaplatform0{\fonttbl\f0\fswiss\fcharset0 Helvetica;\f1\fswiss\fcharset0 Helvetica-Bold;}
+{\colortbl;\red255\green255\blue255;}
+{\*\expandedcolortbl;;}
+\paperw12240\paperh15840\margl1440\margr1440\vieww24040\viewh13700\viewkind0
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
+
+\f0\fs24 \cf0 library(readxl)\
+library(sjPlot)\
+library(table1)\
+setwd(dir = "/Users/diegomartinlombardo/Desktop/ABCD_project")\
+\
+data_table<- my_data[ ,c("Age" , "Sex", "Income", "Parents_H_Degree\'94,\'94mri_info_manufacturer\'94, \'93rsfmri_c_ngd_meanmotion\'94, DMN_DAN", "DMN_FPN", "DMN_VAN","DAN","VAN","FPN", "FPN_DAN", "DMN",\'94nihtbx_list_uncorrected\'94,\'94nihtbx_fluidcomp_uncorrected\'94, \'93nihtbx_cryst_uncorrected\'94,\'94nihtbx_picvocab_uncorrected\'94, \
+\'94AVGcryst","AVGfluid")]\
+\
+high.educ = data_table$Parents_H_Degree\
+\
+\
+idx <- which(high.educ %in% 0:12, arr.ind = TRUE)\
+\
+high.educ[idx] = 1 # "< HS Diploma"\
+\
+idx <- which(high.educ %in% 13:14, arr.ind = TRUE)\
+\
+high.educ[idx] = 2 # "HS Diploma/GED"\
+\
+idx <- which(high.educ %in% 15:17, arr.ind = TRUE)\
+\
+high.educ[idx] = 3 # "Some College"\
+\
+idx <- which(high.educ == 18, arr.ind = TRUE)\
+\
+high.educ[idx] = 4 # "Bachelor"\
+\
+idx <- which(high.educ %in% 19:21, arr.ind = TRUE)\
+\
+high.educ[idx] = 5 # "Post Graduate Degree"\
+\
+high.educ[which(high.educ == "999")]=NA\
+\
+high.educ[which(high.educ == "777")]=NA\
+\
+my_data$Parents_H_Degree = factor( high.educ, levels= 1:5, labels = c("< HS Diploma","HS Diploma/GED","Some College","Bachelor","Post Graduate Degree") )\
+\
+\
+###### Whole-data ######\
+\
+table1::label(whole_final_cohort$Age)  <- "Age (months first session)"\
+table1::label(whole_final_cohort$education)  <- "Highest-degreed parent (years)"\
+table1::label(whole_final_cohort$site_id_l)  <- "Site"\
+\
+table1::label(whole_final_cohort$Sex)  <- "Age (months first session)"\
+\
+table1::label(whole_final_cohort$Income)  <- "Household Income (year) in USD"\
+\
+table1::label(whole_final_cohort$MRI_manufacturer)  <- "MRI manufacturer"\
+\
+table1::label(whole_final_cohort$FD)  <- "Average framewise displacement in mm"\
+\
+table1::label(whole_final_cohort$nihtbx_list_uncorrected)  <- "NIH  List Sorting Working Memory Score"\
+\
+table1::label(whole_final_cohort$nihtbx_fluidcomp_uncorrected)  <- "Fluid intelligence Score NIH"\
+\
+table1::label(whole_final_cohort$nihtbx_pattern_uncorrected)  <- "Pattern Comparison Processing Speed"\
+\
+\
+table1::label(whole_final_cohort$nihtbx_picvocab_uncorrected)  <- "Picture Vocabulary Test Score NIH"\
+\
+table1::label(whole_final_cohort$nihtbx_cryst_uncorrected)  <- "Composite crystilized abilities"\
+\
+table1::label(whole_final_cohort$nihtbx_fluidcomp_uncorrected)  <- "Composite fluid abilities"\
+table1::label(whole_final_cohort$nihtbx_picvocab_uncorrected)  <- "NIH Peabody Picture Vocabulary Test Score"\
+\
+ table1::label(whole_final_cohort$nihtbx_reading_uncorrected)  <- "	Oral Reading Recognition Test NIH"\
+ \
+ \
+ table1::label(whole_final_cohort$nihtbx_flanker_uncorrected)  <- "NIH Toolbox Flanker Inhibitory Control and Attention Score"\
+ \
+ table1::label(whole_final_cohort$	nihtbx_cardsort_uncorrected)  <- "NIH Toolbox Dimensional Change Card Sort Test"\
+ \
+\
+\
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
+
+\f1\b \cf0 FOR the TABLE 1 at the whole population 
+\f0\b0 \
+\
+\
+table1 <- \
+  whole_final_cohort %>%\
+  tbl_summary(include = c(Age, Sex,education,site_id_l,MRI_manufacturer,FD,nihtbx_cardsort_uncorrected,nihtbx_pattern_uncorrected, nihtbx_list_uncorrected,nihtbx_fluidcomp_uncorrected,nihtbx_cryst_uncorrected,nihtbx_picvocab_uncorrected,nihtbx_reading_uncorrected,nihtbx_cryst_uncorrected,nihtbx_fluidcomp_uncorrected ))\
+\
+\
+\
+#### Now tables for discovery and replication data sets #### \
+\
+\
+half_size <- floor(0.5* nrow(whole_final_cohort)) \
+\
+random_sample <- sample(seq_len(nrow(whole_final_cohort)), size = half_size)\
+\
+discovery <- whole_final_cohort[random_sample,]\
+\
+replication <- whole_final_cohort[-random_sample,]\
+\
+\
+sample1=sample(c("discovery"), 1353, replace=TRUE)\
+\
+sample2=sample(c("replication"), 1354, replace=TRUE)\
+\
+\
+half_size <- floor(0.67* nrow(whole_final_cohort)) \
+\
+random_sample <- sample(seq_len(nrow(whole_final_cohort)), size = half_size)\
+\
+training <- whole_final_cohort[random_sample,]\
+\
+test <- whole_final_cohort[-random_sample,]\
+\
+\
+sample2=sample(c("test"), 894, replace=TRUE)\
+\
+\
+sample1=sample(c("training"), 1813, replace=TRUE)\
+\
+\
+\
+\
+discovery=cbind(discovery,sample1)\
+\
+replication=cbind(replication,sample2)\
+\
+discovery=as.matrix(discovery)\
+\
+replication=as.matrix(replication)\
+\
+\
+\
+combinedmatrix <- rbind(discovery, replication)\
+combinedmatrix= data.frame(combinedmatrix)
+\f1\b \
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
+
+\f0\b0 \cf0 \
+training=cbind(training,sample1)\
+\
+test=cbind(test,sample2)\
+\
+training=as.matrix(training)\
+\
+test=as.matrix(test)\
+\
+\
+\
+combinedmatrix2 <- rbind(training, test)\
+combinedmatrix2= data.frame(combinedmatrix2)\
+combinedmatrix2[,4:18]=as.numeric(unlist(combinedmatrix2[,4:18]))\
+combinedmatrix2[,20:26]=as.numeric(unlist(combinedmatrix2[,20:26]))\
+combinedmatrix2[,28]=as.numeric(unlist(combinedmatrix2[,28]))\
+\
+\
+\
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
+
+\f1\b \cf0 problem all the variables are charatcter and therefore has to be converted to numeric the one that  are continous variabels
+\f0\b0 \
+\
+
+\f1\b Important: transform to data frame
+\f0\b0  \
+\
+combinedmatrix= data.frame(combinedmatrix)\
+\
+an then change one by one to numeric \
+\
+combinedmatrix[,4:18]=as.numeric(unlist(combinedmatrix[,4:18]))\
+combinedmatrix[,20:26]=as.numeric(unlist(combinedmatrix[,20:26]))\
+combinedmatrix[,28]=as.numeric(unlist(combinedmatrix[,28]))\
+\
+combinedmatrix$Income=as.factor(combinedmatrix$Income)\
+\
+combinedmatrix$education=as.factor(combinedmatrix$education)\
+\
+combinedmatrix$education=as.factor(combinedmatrix$education)\
+\
+
+\f1\b delate some columns that should\'92t be there 
+\f0\b0 \
+ \
+library(dplyr)\
+combinedmatrix <- combinedmatrix[ -c(29:37) ]\
+\
+###### Now a table with stratification for discovery and replication dataset##table1::label(combinedmatrix$sample1)  <- \'93Sample\'94\
+\
+table1::label(combinedmatrix$Age)  <- "Age (months first session)"\
+table1::label(combinedmatrix$education)  <- "Highest-degreed parent (years)"\
+\
+table1::label(combinedmatrix$site_id_l)  <- "Site"\
+\
+table1::label(combinedmatrix$sample1)  <- \'93Sample\'94\
+\
+table1::label(combinedmatrix$Income)  <- "Household Income (year) in USD"\
+\
+table1::label(combinedmatrix$MRI_manufacturer)  <- "MRI manufacturer"\
+\
+table1::label(combinedmatrix$FD)  <- "Average framewise displacement in mm"\
+\
+table1::label(combinedmatrix$nihtbx_list_uncorrected)  <- "NIH  List Sorting Working Memory Score"\
+\
+table1::label(combinedmatrix$nihtbx_fluidcomp_uncorrected)  <- "Fluid intelligence Score NIH"\
+\
+table1::label(combinedmatrix$nihtbx_cryst_uncorrected)  <- "Crystilized intelligence Score NIH"\
+\
+table1::label(combinedmatrix$nihtbx_picvocab_uncorrected)  <- "Picture Vocabulary Test Score NIH"\
+\
+table1::label(combinedmatrix$nihtbx_cryst_uncorrected"  <- "Composite crystilized abilities"\
+\
+table1::label(combinedmatrix$nihtbx_fluidcomp_uncorrected)  <- "Composite fluid abilities"\
+table1::label(combinedmatrix$nihtbx_picvocab_uncorrected)  <- "NIH Peabody Picture Vocabulary Test Score"\
+\
+ table1::label(combinedmatrix$nihtbx_reading_uncorrected)  <- "	Oral Reading Recognition Test NIH"\
+ \
+ \
+ table1::label(combinedmatrix$nihtbx_flanker_uncorrected)  <- "NIH Toolbox Flanker Inhibitory Control and Attention Score"\
+ \
+ table1::label(combinedmatrix$nihtbx_cardsort_uncorrected)  <- "NIH Toolbox Dimensional Change Card Sort Test"\
+\
+\
+library(gtsummary)\
+\
+table2 <-\
+  tbl_summary(\
+    combinedmatrix,\
+    include = c(Age, Sex,education,MRI_manufacturer,FD,nihtbx_cardsort_uncorrected,nihtbx_list_uncorrected,nihtbx_fluidcomp_uncorrected,nihtbx_cryst_uncorrected,nihtbx_picvocab_uncorrected,nihtbx_reading_uncorrected,nihtbx_cryst_uncorrected,nihtbx_fluidcomp_uncorrected ),\
+    by = sample1, # split table by group\
+    missing = "no" # don't list missing data separately\
+  ) %>%\
+  add_n() %>% # add column with total number of non-missing observations\
+  add_p() %>% # test for a difference between groups\
+  modify_header(label = "**Variable**") %>% # update the column header\
+  bold_labels()\
+\
+\
+\
+###### Simplest Table only with despcriptive stats ###### \
+\
+\
+table1::label(combinedmatrix2$Age)  <- "Age (months first session)"\
+table1::label(combinedmatrix2$education)  <- "Highest-degreed parent (years)"\
+\
+table1::label(combinedmatrix2$sample1)  <- "Sample"\
+table1::label(combinedmatrix2$site_id_l)  <- "Site"\
+\
+table1::label(combinedmatrix2$Income)  <- "Household Income (year) in USD"\
+\
+table1::label(combinedmatrix2$MRI_manufacturer)  <- "MRI manufacturer"\
+\
+table1::label(combinedmatrix2$FD)  <- "Average framewise displacement in mm"\
+\
+table1::label(combinedmatrix2$nihtbx_list_uncorrected)  <- "NIH  List Sorting Working Memory Score"\
+\
+table1::label(combinedmatrix2$nihtbx_fluidcomp_uncorrected)  <- "Fluid intelligence Score NIH"\
+\
+table1::label(combinedmatrix2$nihtbx_cryst_uncorrected)  <- "Crystilized intelligence Score NIH"\
+\
+table1::label(combinedmatrix2$nihtbx_picvocab_uncorrected)  <- "Picture Vocabulary Test Score NIH"\
+\
+table1::label(combinedmatrix2$nihtbx_cryst_uncorrected) <- "Composite crystilized abilities"\
+\
+table1::label(combinedmatrix2$nihtbx_fluidcomp_uncorrected)  <- "Composite fluid abilities"\
+table1::label(combinedmatrix2$nihtbx_picvocab_uncorrected)  <- "NIH Peabody Picture Vocabulary Test Score"\
+\
+ table1::label(combinedmatrix2$nihtbx_reading_uncorrected)  <- "	Oral Reading Recognition Test NIH"\
+ \
+ \
+ table1::label(combinedmatrix2$nihtbx_flanker_uncorrected)  <- "NIH Toolbox Flanker Inhibitory Control and Attention Score"\
+ \
+ table1::label(combinedmatrix2$nihtbx_cardsort_uncorrected)  <- "NIH Toolbox Dimensional Change Card Sort Test"\
+\
+\
+\
+\
+library(gtsummary)\
+\
+table2 <-\
+  tbl_summary(\
+    combinedmatrix2,\
+    include = c(Age, Sex,education,MRI_manufacturer,FD,nihtbx_cardsort_uncorrected,nihtbx_list_uncorrected,nihtbx_fluidcomp_uncorrected,nihtbx_cryst_uncorrected,nihtbx_picvocab_uncorrected,nihtbx_reading_uncorrected,nihtbx_cryst_uncorrected,nihtbx_fluidcomp_uncorrected ),\
+    by = sample1, # split table by group\
+    missing = "no" # don't list missing data separately\
+  ) %>%\
+  add_n() %>% # add column with total number of non-missing observations\
+  add_p() %>% # test for a difference between groups\
+  modify_header(label = "**Variable**") %>% # update the column header\
+  bold_labels()\
+\
+\
+}
