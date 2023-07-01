@@ -2956,4 +2956,12 @@ replication <- whole_final_cohort[-random_sample, ]\
 \
 \
 \
+For the supplementary figure 
+
+library(PerformanceAnalytics)
+
+corr_datat=whole_final_cohort[ ,c("Age","FD","nihtbx_list_uncorrected","nihtbx_flanker_uncorrected", "nihtbx_cardsort_uncorrected", "nihtbx_pattern_uncorrected","nihtbx_fluidcomp_uncorrected","nihtbx_picvocab_uncorrected","nihtbx_reading_uncorrected","nihtbx_cryst_uncorrected" )]
+
+
+chart.Correlation(corr_datat, histogram=TRUE, pch="19", method = 'spearman')
 }
