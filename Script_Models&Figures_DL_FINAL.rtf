@@ -2963,5 +2963,300 @@ library(PerformanceAnalytics)
 corr_datat=whole_final_cohort[ ,c("Age","FD","nihtbx_list_uncorrected","nihtbx_flanker_uncorrected", "nihtbx_cardsort_uncorrected", "nihtbx_pattern_uncorrected","nihtbx_fluidcomp_uncorrected","nihtbx_picvocab_uncorrected","nihtbx_reading_uncorrected","nihtbx_cryst_uncorrected" )]
 
 
+
+
+###### Script for suplementary Figure 4 (S4)####
+ 
+### Bootstrap and normalization of betas ###
+
+
+
+library(parallel)
+library(readxl)
+library(sjPlot)
+
+library(boot)
+library(lmboot)
+
+set.seed(345);
+
+par(mfrow=c(2,3))
+
+y=whole_final_cohort[ ,c("AVGfluid")]
+
+x1=model.matrix(AVGfluid~  DMN,whole_final_cohort)[, -1] #Dropping the intercept column)
+
+DMNfWildObj <- wild.boot(y ~ x1, B=10000, seed=Seed)
+WildObj$origEstParam
+
+sdDMNf=sd(whole_final_cohort$DMN)/sd(whole_final_cohort$AVGfluid)
+
+normDMNf=DMNfWildObj$ bootEstParam[,2]*sdDMNf
+
+hist(normDMNf,main=expression(paste(" boostraped ",beta,~ "coeficients")),
+      xlab= " Betas DMN connectivity fluid vs crystillized abilities", ylab= "Count (in 10000 Boostrap Replications)",col=rgb(0,0,1,1/4),cex.axis = 1.5, cex.lab = 1.2,ylim=c(0,3000))
+
+mnDMNf=mean(normDMNf,)
+
+abline(v = mnDMNf,col="blue", lwd=3, lty=2)
+
+rug(normDMNf, ticksize = 0.03, side = 1, lwd = 0.1, col=rgb(0,0,1,1/4),
+    quiet = getOption("warn") < 0)
+
+
+y=whole_final_cohort[ ,c("AVGcryst")]
+
+x1=model.matrix(AVGcryst~  DMN,whole_final_cohort)[, -1] #Dropping the intercept column)
+
+DMNcrWildObj <- wild.boot(y ~ x1, B=10000, seed=Seed)
+WildObj$origEstParam
+
+sdDMNcr=sd(whole_final_cohort$DMN)/sd(whole_final_cohort$AVGcryst)
+
+normDMNcr=DMNcrWildObj$ bootEstParam[,2]*sdDMNcr
+
+hist(normDMNcr,main=expression(paste(" boostraped ",beta,~ "coeficients")),
+      xlab= " Betas DMN connectivity fluid vs crystillized abilities", ylab= "Count (in 10000 Boostrap Replications)",col=rgb(1,0,1,1/4),cex.axis = 1.5, cex.lab = 1.2,ylim=c(0,3000),add=TRUE)
+
+mnDMNcr=mean(normDMNcr,)
+
+abline(v = mnDMNcr,col="red", lwd=3, lty=2)
+
+rug(normDMNcr, ticksize = 0.03, side = 1, lwd = 0.1, col=rgb(1,0,1,1/4),
+    quiet = getOption("warn") < 0)
+
+
+
+
+
+y=whole_final_cohort[ ,c("AVGfluid")]
+
+x1=model.matrix(AVGfluid~  DAN,whole_final_cohort)[, -1] #Dropping the intercept column)
+
+DANfWildObj <- wild.boot(y ~ x1, B=10000, seed=Seed)
+WildObj$origEstParam
+
+sdDANf=sd(whole_final_cohort$DAN)/sd(whole_final_cohort$AVGfluid)
+
+normDANf=DANfWildObj$ bootEstParam[,2]*sdDANf
+
+hist(normDANf,main=expression(paste(" boostraped ",beta,~ "coeficients")),
+      xlab= " Betas DAN connectivity fluid vs crystillized abilities", ylab= "Count (in 10000 Boostrap Replications)",col=rgb(0,0,1,1/4),cex.axis = 1.5, cex.lab = 1.2,ylim=c(0,3000))
+
+mnDANf=mean(normDANf,)
+
+abline(v = mnDANf,col="blue", lwd=3, lty=2)
+
+rug(normDANf, ticksize = 0.03, side = 1, lwd = 0.1, col=rgb(0,0,1,1/4),
+    quiet = getOption("warn") < 0)
+
+
+y=whole_final_cohort[ ,c("AVGcryst")]
+
+x1=model.matrix(AVGcryst~  DAN,whole_final_cohort)[, -1] #Dropping the intercept column)
+
+DANcrWildObj <- wild.boot(y ~ x1, B=10000, seed=Seed)
+WildObj$origEstParam
+
+sdDANcr=sd(whole_final_cohort$DAN)/sd(whole_final_cohort$AVGcryst)
+
+normDANcr=DANcrWildObj$ bootEstParam[,2]*sdDANcr
+
+hist(normDANcr,main=expression(paste(" boostraped ",beta,~ "coeficients")),
+      xlab= " Betas DAN connectivity fluid vs crystillized abilities", ylab= "Count (in 10000 Boostrap Replications)",col=rgb(1,0,1,1/4),cex.axis = 1.5, cex.lab = 1.2,ylim=c(0,3000),add=TRUE)
+
+mnDANcr=mean(normDANcr,)
+
+abline(v = mnDANcr,col="red", lwd=3, lty=2)
+
+rug(normDANcr, ticksize = 0.03, side = 1, lwd = 0.1, col=rgb(1,0,1,1/4),
+    quiet = getOption("warn") < 0)
+
+
+
+
+
+
+y=whole_final_cohort[ ,c("AVGfluid")]
+
+x1=model.matrix(AVGfluid~  VAN,whole_final_cohort)[, -1] #Dropping the intercept column)
+
+VANfWildObj <- wild.boot(y ~ x1, B=10000, seed=Seed)
+WildObj$origEstParam
+
+sdVANf=sd(whole_final_cohort$VAN)/sd(whole_final_cohort$AVGfluid)
+
+normVANf=VANfWildObj$ bootEstParam[,2]*sdVANf
+
+hist(normVANf,main=expression(paste(" boostraped ",beta,~ "coeficients")),
+      xlab= " Betas VAN connectivity fluid vs crystillized abilities", ylab= "Count (in 10000 Boostrap Replications)",col=rgb(0,0,1,1/4),cex.axis = 1.5, cex.lab = 1.2,ylim=c(0,3000))
+
+mnVANf=mean(normVANf,)
+
+abline(v = mnVANf,col="blue", lwd=3, lty=2)
+
+rug(normVANf, ticksize = 0.03, side = 1, lwd = 0.1, col=rgb(0,0,1,1/4),
+    quiet = getOption("warn") < 0)
+
+
+y=whole_final_cohort[ ,c("AVGcryst")]
+
+x1=model.matrix(AVGcryst~  VAN,whole_final_cohort)[, -1] #Dropping the intercept column)
+
+VANcrWildObj <- wild.boot(y ~ x1, B=10000, seed=Seed)
+WildObj$origEstParam
+
+sdVANcr=sd(whole_final_cohort$VAN)/sd(whole_final_cohort$AVGcryst)
+
+normVANcr=VANcrWildObj$ bootEstParam[,2]*sdVANcr
+
+hist(normVANcr,main=expression(paste(" boostraped ",beta,~ "coeficients")),
+      xlab= " Betas VAN connectivity fluid vs crystillized abilities", ylab= "Count (in 10000 Boostrap Replications)",col=rgb(1,0,1,1/4),cex.axis = 1.5, cex.lab = 1.2,ylim=c(0,3000),add=TRUE)
+
+mnVANcr=mean(normVANcr,)
+
+abline(v = mnVANcr,col="red", lwd=3, lty=2)
+
+rug(normVANcr, ticksize = 0.03, side = 1, lwd = 0.1, col=rgb(1,0,1,1/4),
+    quiet = getOption("warn") < 0)
+
+
+
+
+y=whole_final_cohort[ ,c("AVGfluid")]
+
+x1=model.matrix(AVGfluid~  DMN_DAN,whole_final_cohort)[, -1] #Dropping the intercept column)
+
+DMN_DANfWildObj <- wild.boot(y ~ x1, B=10000, seed=Seed)
+WildObj$origEstParam
+
+sdDMN_DANf=sd(whole_final_cohort$DMN_DAN)/sd(whole_final_cohort$AVGfluid)
+
+normDMN_DANf=DMN_DANfWildObj$ bootEstParam[,2]*sdDMN_DANf
+
+hist(normDMN_DANf,main=expression(paste(" boostraped ",beta,~ "coeficients")),
+      xlab= " Betas DMN DAN connectivity fluid vs crystillized abilities", ylab= "Count (in 10000 Boostrap Replications)",col=rgb(0,0,1,1/4),cex.axis = 1.5, cex.lab = 1.2,ylim=c(0,3000))
+
+mnDMN_DANf=mean(normDMN_DANf,)
+
+abline(v = mnDMN_DANf,col="blue", lwd=3, lty=2)
+
+rug(normDMN_DANf, ticksize = 0.03, side = 1, lwd = 0.1, col=rgb(0,0,1,1/4),
+    quiet = getOption("warn") < 0)
+
+
+y=whole_final_cohort[ ,c("AVGcryst")]
+
+x1=model.matrix(AVGcryst~  DMN_DAN,whole_final_cohort)[, -1] #Dropping the intercept column)
+
+DMN_DANcrWildObj <- wild.boot(y ~ x1, B=10000, seed=Seed)
+WildObj$origEstParam
+
+sdDMN_DANcr=sd(whole_final_cohort$DMN_DAN)/sd(whole_final_cohort$AVGcryst)
+
+normDMN_DANcr=DMN_DANcrWildObj$ bootEstParam[,2]*sdDMN_DANcr
+
+hist(normDMN_DANcr,main=expression(paste(" boostraped ",beta,~ "coeficients")),
+      xlab= " Betas DMN DAN connectivity fluid vs crystillized abilities", ylab= "Count (in 10000 Boostrap Replications)",col=rgb(1,0,1,1/4),cex.axis = 1.5, cex.lab = 1.2,ylim=c(0,3000),add=TRUE)
+
+mnDMN_DANcr=mean(normDMN_DANcr,)
+
+abline(v = mnDMN_DANcr,col="red", lwd=3, lty=2)
+
+rug(normDMN_DANcr, ticksize = 0.03, side = 1, lwd = 0.1, col=rgb(1,0,1,1/4),
+    quiet = getOption("warn") < 0)
+
+
+
+y=whole_final_cohort[ ,c("AVGfluid")]
+
+x1=model.matrix(AVGfluid~  DMN_VAN,whole_final_cohort)[, -1] #Dropping the intercept column)
+
+DMN_VANfWildObj <- wild.boot(y ~ x1, B=10000, seed=Seed)
+WildObj$origEstParam
+
+sdDMN_VANf=sd(whole_final_cohort$DMN_VAN)/sd(whole_final_cohort$AVGfluid)
+
+normDMN_VANf=DMN_VANfWildObj$ bootEstParam[,2]*sdDMN_VANf
+
+hist(normDMN_VANf,main=expression(paste(" boostraped ",beta,~ "coeficients")),
+      xlab= " Betas DMN VAN connectivity fluid vs crystillized abilities", ylab= "Count (in 10000 Boostrap Replications)",col=rgb(0,0,1,1/4),cex.axis = 1.5, cex.lab = 1.2,ylim=c(0,3000))
+
+mnDMN_VANf=mean(normDMN_VANf,)
+
+abline(v = mnDMN_VANf,col="blue", lwd=3, lty=2)
+
+rug(normDMN_VANf, ticksize = 0.03, side = 1, lwd = 0.1, col=rgb(0,0,1,1/4),
+    quiet = getOption("warn") < 0)
+
+
+y=whole_final_cohort[ ,c("AVGcryst")]
+
+x1=model.matrix(AVGcryst~  DMN_VAN,whole_final_cohort)[, -1] #Dropping the intercept column)
+
+DMN_VANcrWildObj <- wild.boot(y ~ x1, B=10000, seed=Seed)
+WildObj$origEstParam
+
+sdDMN_VANcr=sd(whole_final_cohort$DMN_VAN)/sd(whole_final_cohort$AVGcryst)
+
+normDMN_VANcr=DMN_VANcrWildObj$ bootEstParam[,2]*sdDMN_VANcr
+
+hist(normDMN_VANcr,main=expression(paste(" boostraped ",beta,~ "coeficients")),
+      xlab= " Betas DMN VAN connectivity fluid vs crystillized abilities", ylab= "Count (in 10000 Boostrap Replications)",col=rgb(1,0,1,1/4),cex.axis = 1.5, cex.lab = 1.2,ylim=c(0,3000),add=TRUE)
+
+mnDMN_VANcr=mean(normDMN_VANcr,)
+
+abline(v = mnDMN_VANcr,col="red", lwd=3, lty=2)
+
+rug(normDMN_VANcr, ticksize = 0.03, side = 1, lwd = 0.1, col=rgb(1,0,1,1/4),
+    quiet = getOption("warn") < 0)
+
+
+
+
+
+y=whole_final_cohort[ ,c("AVGfluid")]
+
+x1=model.matrix(AVGfluid~  VAN_DAN,whole_final_cohort)[, -1] #Dropping the intercept column)
+
+VAN_DANfWildObj <- wild.boot(y ~ x1, B=10000, seed=Seed)
+WildObj$origEstParam
+
+sdVAN_DANf=sd(whole_final_cohort$VAN_DAN)/sd(whole_final_cohort$AVGfluid)
+
+normVAN_DANf=VAN_DANfWildObj$ bootEstParam[,2]*sdVAN_DANf
+
+hist(normVAN_DANf,main=expression(paste(" boostraped ",beta,~ "coeficients")),
+      xlab= " Betas VAN DAN connectivity fluid vs crystillized abilities", ylab= "Count (in 10000 Boostrap Replications)",col=rgb(0,0,1,1/4),cex.axis = 1.5, cex.lab = 1.2,ylim=c(0,3000))
+
+mnVAN_DANf=mean(normVAN_DANf,)
+
+abline(v = mnVAN_DANf,col="blue", lwd=3, lty=2)
+
+rug(normVAN_DANf, ticksize = 0.03, side = 1, lwd = 0.1, col=rgb(0,0,1,1/4),
+    quiet = getOption("warn") < 0)
+
+
+y=whole_final_cohort[ ,c("AVGcryst")]
+
+x1=model.matrix(AVGcryst~  VAN_DAN,whole_final_cohort)[, -1] #Dropping the intercept column)
+
+VAN_DANcrWildObj <- wild.boot(y ~ x1, B=10000, seed=Seed)
+WildObj$origEstParam
+
+sdVAN_DANcr=sd(whole_final_cohort$VAN_DAN)/sd(whole_final_cohort$AVGcryst)
+
+normVAN_DANcr=VAN_DANcrWildObj$ bootEstParam[,2]*sdVAN_DANcr
+
+hist(normVAN_DANcr,main=expression(paste(" boostraped ",beta,~ "coeficients")),
+      xlab= " Betas VAN DAN connectivity fluid vs crystillized abilities", ylab= "Count (in 10000 Boostrap Replications)",col=rgb(1,0,1,1/4),cex.axis = 1.5, cex.lab = 1.2,ylim=c(0,3000),add=TRUE)
+
+mnVAN_DANcr=mean(normVAN_DANcr,)
+
+abline(v = mnVAN_DANcr,col="red", lwd=3, lty=2)
+
+rug(normVAN_DANcr, ticksize = 0.03, side = 1, lwd = 0.1, col=rgb(1,0,1,1/4),
+    quiet = getOption("warn") < 0)
+
 chart.Correlation(corr_datat, histogram=TRUE, pch="19", method = 'spearman')
 }
