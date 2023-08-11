@@ -94,7 +94,7 @@ table1 <- \
 ### To get the tables in word documents for production (aresenal in my opinion is easy) ###
 library(arsenal)
 
-table1 <- arsenal::tableby(~ Sex + Age + MRI_manufacturer +education+ FD+nihtbx_cardsort_uncorrected+nihtbx_pattern_uncorrected+ nihtbx_list_uncorrected+nihtbx_fluidcomp_uncorrected+nihtbx_cryst_uncorrected+nihtbx_picvocab_uncorrected+nihtbx_reading_uncorrected+nihtbx_cryst_uncorrected+nihtbx_fluidcomp_uncorrected, data=whole_final_cohort) 
+table1 <- arsenal::tableby(~ Sex + Age + MRI_manufacturer +education+Income+ FD+nihtbx_cardsort_uncorrected+nihtbx_pattern_uncorrected+ nihtbx_list_uncorrected+nihtbx_fluidcomp_uncorrected+nihtbx_cryst_uncorrected+nihtbx_picvocab_uncorrected+nihtbx_reading_uncorrected+nihtbx_cryst_uncorrected+nihtbx_fluidcomp_uncorrected, data=whole_final_cohort) 
 arsenal::write2word(descriptives, "table1_arsenal.docx", title = "Table S1",
                     quiet = TRUE) # to suppress the command line output
 \
